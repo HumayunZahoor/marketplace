@@ -1,0 +1,54 @@
+.bottom-shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .background {
+    background-image: url('../images/home3.jpeg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; 
+    height: 400px;
+    /* width: 100%; */
+  }
+  
+  .background2 {
+    background-image: url('../images/home.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; 
+    height: 400px;
+    border-radius: 10px;
+    /* width: 100%; */
+  }
+
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .animate-slide-in {
+    animation: slide-in 1s ease-out;
+  }
+  
+
+ 
+.slider-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+.clip-shape {
+  clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 0);
+}
+
+
+
