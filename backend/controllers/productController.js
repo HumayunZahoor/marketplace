@@ -2,7 +2,7 @@ import Product from '../models/Product.js'
 
 export const addProduct = async (req, res) => {
   try {
-    const { category, subcategory, productName, price, colors, features, email, shopId } = req.body;
+    const { category, subcategory, productName, price, quantity, colors, features, email, shopId } = req.body;
     const image = req.file ? req.file.filename : null;
 
     if (!image) {
@@ -15,6 +15,7 @@ export const addProduct = async (req, res) => {
       subcategory,
       productName,
       price,
+      quantity,
       colors,
       features,
       email,
@@ -22,7 +23,7 @@ export const addProduct = async (req, res) => {
       image,
     });
 
-    if (!category || !subcategory || !productName || !price || !colors || !features || !email || !shopId) {
+    if (!category || !subcategory || !productName || !price || !quantity || !colors || !features || !email || !shopId) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -35,6 +36,7 @@ export const addProduct = async (req, res) => {
       subcategory,
       productName,
       price,
+      quantity,
       colors: JSON.parse(colors),
       features: JSON.parse(features),
       image,
@@ -53,7 +55,7 @@ export const addProduct = async (req, res) => {
 
 // -----------------------------------
 
-// Get all products for a specific shop
+
 export const getProductsByShop = async (req, res) => {
   try {
     const products = await Product.find({ shopId: req.params.shopId });
@@ -70,7 +72,7 @@ export const getProductsByShop = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-    const { category, subcategory, productName, price, colors, features } = req.body;
+    const { category, subcategory, productName, price, quantity, colors, features } = req.body;
 
     const updatedData = {
       category,
@@ -78,7 +80,7 @@ export const updateProduct = async (req, res) => {
       productName,
     };
 
-    // Handle `price` input
+    
     if (price) {
       const priceValue = parseFloat(price);
       if (!isNaN(priceValue)) {
@@ -88,7 +90,15 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    // Parse and handle `colors` input (expecting JSON array)
+    if (quantity) {
+      const quantityValue = parseInt(quantity, 10);
+      if (!isNaN(quantityValue)) {
+        updatedData.quantity = quantityValue;
+      } else {
+        return res.status(400).json({ message: 'Invalid quantity value' });
+      }
+    }
+    
     if (colors) {
       try {
         updatedData.colors = JSON.parse(colors);
@@ -97,7 +107,6 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    // Parse and handle `features` input (expecting JSON array)
     if (features) {
       try {
         updatedData.features = JSON.parse(features);
@@ -106,7 +115,6 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    // Handle file upload
     if (req.file) {
       updatedData.image = req.file.filename;
     }
@@ -128,7 +136,7 @@ export const updateProduct = async (req, res) => {
 
 //--------------------------------------------------
 
-// Delete a specific product
+
 export const deleteProduct = async (req, res) => {
   try {
     const { productId } = req.params;

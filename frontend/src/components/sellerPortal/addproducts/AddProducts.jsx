@@ -8,6 +8,7 @@ const AddProducts = () => {
   const [subcategory, setSubcategory] = useState('');
   const [productName, setProductName] = useState('');
   const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
   const [colors, setColors] = useState([]);
   const [image, setImage] = useState(null);
   const [features, setFeatures] = useState([]);
@@ -63,6 +64,7 @@ const AddProducts = () => {
     formData.append('subcategory', subcategory);
     formData.append('productName', productName);
     formData.append('price', price);
+    formData.append('quantity', quantity);
     formData.append('colors', JSON.stringify(colors));
     formData.append('features', JSON.stringify(features));
     formData.append('image', image);
@@ -142,6 +144,16 @@ const AddProducts = () => {
             type="number" 
             value={price} 
             onChange={(e) => setPrice(e.target.value)} 
+            required 
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Quantity:</label>
+          <input 
+            type="number" 
+            value={quantity} 
+            onChange={(e) => setQuantity(e.target.value)} 
             required 
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />

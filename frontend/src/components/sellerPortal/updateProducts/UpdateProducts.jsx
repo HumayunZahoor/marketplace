@@ -5,9 +5,9 @@ import axios from 'axios';
 const UpdateProducts = () => {
   const { user, shopId } = useSelector((state) => state.auth);
   const [products, setProducts] = useState([]);
-  const [formData, setFormData] = useState({}); // Using a regular object to handle input changes
+  const [formData, setFormData] = useState({}); 
 
-  // Fetch products based on shopId
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -23,11 +23,10 @@ const UpdateProducts = () => {
     }
   }, [shopId]);
 
-  // Handle form input changes
+  
   const handleInputChange = (e, productId) => {
     const { name, value, files } = e.target;
-
-    // Update the formData for the specific product
+  
     setFormData((prevData) => ({
       ...prevData,
       [productId]: {
@@ -36,12 +35,13 @@ const UpdateProducts = () => {
       },
     }));
   };
+  
 
-  // Handle array fields like features and colors
+ 
   const handleArrayInputChange = (e, productId) => {
     const { name, value } = e.target;
 
-    // Split comma-separated values into an array and trim whitespaces
+   
     setFormData((prevData) => ({
       ...prevData,
       [productId]: {
@@ -51,16 +51,15 @@ const UpdateProducts = () => {
     }));
   };
 
-  // Update product handler
+  
   const handleUpdateProduct = async (productId) => {
     const productFormData = new FormData();
-
-    // Append data from formData state
+  
     for (const key in formData[productId]) {
       if (key === 'image') {
         productFormData.append(key, formData[productId][key]);
       } else if (key === 'features' || key === 'colors') {
-        productFormData.append(key, JSON.stringify(formData[productId][key])); // Send as JSON string
+        productFormData.append(key, JSON.stringify(formData[productId][key])); 
       } else {
         productFormData.append(key, formData[productId][key]);
       }
@@ -79,7 +78,7 @@ const UpdateProducts = () => {
     }
   };
 
-  // Delete product handler
+  
   const handleDeleteProduct = async (productId) => {
     try {
       await axios.delete(`http://localhost:5001/api/products/delete-product/${productId}`);
@@ -105,7 +104,7 @@ const UpdateProducts = () => {
         {products.map((product) => (
           <div key={product._id} className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">{product.productName}</h3>
-            {/* Product fields */}
+           
             <input
               type="text"
               name="category"
@@ -138,6 +137,15 @@ const UpdateProducts = () => {
               onChange={(e) => handleInputChange(e, product._id)}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
             />
+            <input
+              type="number"
+              name="quantity"
+              placeholder="Quantity"
+              defaultValue={product.quantity}
+              onChange={(e) => handleInputChange(e, product._id)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+            />
+
             <input
               type="text"
               name="colors"
