@@ -71,7 +71,7 @@ const UpdateProducts = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      alert('Product updated successfully!');
+      alert('Product updated succes-w-96 y!');
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Failed to update product');
@@ -83,7 +83,7 @@ const UpdateProducts = () => {
     try {
       await axios.delete(`http://localhost:5001/api/products/delete-product/${productId}`);
       setProducts(products.filter((product) => product._id !== productId));
-      alert('Product deleted successfully!');
+      alert('Product deleted succes-w-96 y!');
     } catch (error) {
       console.error('Error deleting product:', error);
       alert('Failed to delete product');
@@ -111,7 +111,7 @@ const UpdateProducts = () => {
               placeholder="Category"
               defaultValue={product.category}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="text"
@@ -119,7 +119,7 @@ const UpdateProducts = () => {
               placeholder="Subcategory"
               defaultValue={product.subcategory}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="text"
@@ -127,7 +127,7 @@ const UpdateProducts = () => {
               placeholder="Product Name"
               defaultValue={product.productName}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="number"
@@ -135,7 +135,7 @@ const UpdateProducts = () => {
               placeholder="Price"
               defaultValue={product.price}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="number"
@@ -143,7 +143,7 @@ const UpdateProducts = () => {
               placeholder="Quantity"
               defaultValue={product.quantity}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />
 
             <input
@@ -152,7 +152,7 @@ const UpdateProducts = () => {
               placeholder="Colors (comma separated)"
               defaultValue={product.colors.join(',')}
               onChange={(e) => handleArrayInputChange(e, product._id)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="text"
@@ -160,32 +160,32 @@ const UpdateProducts = () => {
               placeholder="Features (comma separated)"
               defaultValue={product.features.join(',')}
               onChange={(e) => handleArrayInputChange(e, product._id)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="file"
               name="image"
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
+              className="mt-1 block w-96  text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
             />
-
-            {/* Update Button */}
+            <div className=" flex justify-start ">
             <button
               type="button"
               onClick={() => handleUpdateProduct(product._id)}
-              className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
+              className="mt-4 h-12 w-30 py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
             >
               Update Product
             </button>
 
-            {/* Delete Button */}
+            
             <button
               type="button"
               onClick={() => handleDeleteProduct(product._id)}
-              className="mt-2 w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-red-700"
+              className="m-4 h-12 w-30 py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-red-700"
             >
               Delete Product
             </button>
+            </div>
           </div>
         ))}
       </div>
