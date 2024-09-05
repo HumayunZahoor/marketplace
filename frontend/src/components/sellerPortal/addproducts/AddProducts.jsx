@@ -30,7 +30,7 @@ const AddProducts = () => {
   useEffect(() => {
     if (category) {
       setSubcategories(categories[category] || []);
-      setSubcategory(''); // Reset subcategory when category changes
+      setSubcategory(''); 
     } else {
       setSubcategories([]);
       setSubcategory('');
@@ -46,7 +46,14 @@ const AddProducts = () => {
   };
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    
+    if (file && validImageTypes.includes(file.type)) {
+      setImage(file);
+    } else {
+      alert("Please upload a valid image file (JPEG, PNG, GIF).");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -61,7 +68,12 @@ const AddProducts = () => {
     formData.append('image', image);
     formData.append('email', user.email);
     formData.append('shopId', shopId);
-
+  
+    
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+  
     try {
       const response = await axios.post('http://localhost:5001/api/products/add-products', formData, {
         headers: {
@@ -70,9 +82,11 @@ const AddProducts = () => {
       });
       console.log(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Error submitting product:", error);
+      alert(`Error  ${error}`);
     }
   };
+  
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
