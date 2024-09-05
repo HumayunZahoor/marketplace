@@ -43,11 +43,16 @@ const ShopList = () => {
     <div className="flex flex-col items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md mt-6">
         <h2 className="text-2xl font-bold text-center mb-6">Shop List</h2>
+        <div className="mt-6 text-center">
+          <Link to="/CreateShopForm" className="text-indigo-700 font-semibold hover:underline m-5">
+            Create New Shop
+          </Link>
+        </div>
         {error && <p className="text-red-700 mb-4">{error}</p>}
         {shops.length === 0 ? (
           <p className="text-gray-700 text-center">No shops available.</p>
         ) : (
-          <ul className="space-y-4">
+          <ul className="space-y-4 mt-5">
             {shops.map((shop) => (
               <li key={shop.id} className="p-6 border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">Shop Name:</h3>
@@ -80,11 +85,7 @@ const ShopList = () => {
             ))}
           </ul>
         )}
-        <div className="mt-6 text-center">
-          <Link to="/CreateShopForm" className="text-indigo-700 font-semibold hover:underline">
-            Create New Shop
-          </Link>
-        </div>
+        
       </div>
     </div>
   );

@@ -71,7 +71,7 @@ const UpdateProducts = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      alert('Product updated succes-w-96 y!');
+      alert('Product updated successfully!');
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Failed to update product');
@@ -83,7 +83,7 @@ const UpdateProducts = () => {
     try {
       await axios.delete(`http://localhost:5001/api/products/delete-product/${productId}`);
       setProducts(products.filter((product) => product._id !== productId));
-      alert('Product deleted succes-w-96 y!');
+      alert('Product deleted successfully!');
     } catch (error) {
       console.error('Error deleting product:', error);
       alert('Failed to delete product');
@@ -172,7 +172,7 @@ const UpdateProducts = () => {
             <button
               type="button"
               onClick={() => handleUpdateProduct(product._id)}
-              className="mt-4 h-12 w-30 py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
+              className="mt-4 h-12 w-30 py-2 px-4 bg-indigo-900 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
             >
               Update Product
             </button>
@@ -181,7 +181,7 @@ const UpdateProducts = () => {
             <button
               type="button"
               onClick={() => handleDeleteProduct(product._id)}
-              className="m-4 h-12 w-30 py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-red-700"
+              className="m-4 h-12 w-30 py-2 px-4 bg-indigo-900 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
             >
               Delete Product
             </button>

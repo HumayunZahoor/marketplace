@@ -189,7 +189,7 @@ const AddProducts = () => {
         </div>
         <button 
           type="submit" 
-          className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="mt-4 w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Add Product
         </button>
