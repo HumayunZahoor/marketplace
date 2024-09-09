@@ -2,7 +2,7 @@ import Product from '../models/Product.js'
 
 export const addProduct = async (req, res) => {
   try {
-    const { category, subcategory, productName, price, quantity, colors, features, email, shopId } = req.body;
+    const { category, subcategory, productName, price, quantity, colors, features, size, email, shopId, onSale, priceOnSale } = req.body;
     const image = req.file ? req.file.filename : null;
 
     if (!image) {
@@ -10,20 +10,20 @@ export const addProduct = async (req, res) => {
     }
 
     
-    console.log("Received Data:", {
-      category,
-      subcategory,
-      productName,
-      price,
-      quantity,
-      colors,
-      features,
-      email,
-      shopId,
-      image,
-    });
+    // console.log("Received Data:", {
+    //   category,
+    //   subcategory,
+    //   productName,
+    //   price,
+    //   quantity,
+    //   colors,
+    //   features,
+    //   email,
+    //   shopId,
+    //   image,
+    // });
 
-    if (!category || !subcategory || !productName || !price || !quantity || !colors || !features || !email || !shopId) {
+    if (!category || !subcategory || !productName || !price || !quantity  || !email || !shopId) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -40,8 +40,11 @@ export const addProduct = async (req, res) => {
       colors: JSON.parse(colors),
       features: JSON.parse(features),
       image,
+      size: JSON.parse(size),
       email,
       shopId,
+      onSale,
+      priceOnSale,
     });
 
     await newProduct.save();
@@ -72,12 +75,14 @@ export const getProductsByShop = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-    const { category, subcategory, productName, price, quantity, colors, features } = req.body;
+    const { category, subcategory, productName, price, quantity, colors, features, size, onSale, priceOnSale } = req.body;
 
     const updatedData = {
       category,
       subcategory,
       productName,
+      onSale,
+      priceOnSale,
     };
 
     
@@ -112,6 +117,14 @@ export const updateProduct = async (req, res) => {
         updatedData.features = JSON.parse(features);
       } catch (e) {
         return res.status(400).json({ message: 'Invalid format for features' });
+      }
+    }
+
+    if (size) {
+      try {
+        updatedData.size = JSON.parse(size);
+      } catch (e) {
+        return res.status(400).json({ message: 'Invalid format for size' });
       }
     }
 
@@ -150,6 +163,44 @@ export const deleteProduct = async (req, res) => {
     res.json({ message: 'Product deleted successfully' });
   } catch (error) {
     console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+//-------------------------------------------
+
+export const updateProductsOnSale = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { category, subcategory, productName, price, onSale, priceOnSale } = req.body;
+
+    const updatedData = {
+      category,
+      subcategory,
+      productName,
+      onSale,
+      priceOnSale,
+    };
+
+    if (price) {
+      const priceValue = parseFloat(price);
+      if (!isNaN(priceValue)) {
+        updatedData.price = priceValue;
+      } else {
+        return res.status(400).json({ message: 'Invalid price value' });
+      }
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updatedData, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

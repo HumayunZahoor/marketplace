@@ -12,6 +12,7 @@ const AddProducts = () => {
   const [colors, setColors] = useState([]);
   const [image, setImage] = useState(null);
   const [features, setFeatures] = useState([]);
+  const [size, setSize] = useState([]);
 
   const [subcategories, setSubcategories] = useState([]);
 
@@ -28,10 +29,12 @@ const AddProducts = () => {
     'Food & Beverages': ['Snacks', 'Beverages', 'Groceries'],
   };
 
+  const sizeCategories = ['Fashion', 'Home & Garden', 'Beauty & Health', 'Automotive', 'Sports & Outdoors', 'Toys & Games'];
+
   useEffect(() => {
     if (category) {
       setSubcategories(categories[category] || []);
-      setSubcategory(''); 
+      setSubcategory('');
     } else {
       setSubcategories([]);
       setSubcategory('');
@@ -46,14 +49,18 @@ const AddProducts = () => {
     setFeatures(e.target.value.split(','));
   };
 
+  const handleSizeChange = (e) => {
+    setSize(e.target.value.split(','));
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    
+
     if (file && validImageTypes.includes(file.type)) {
       setImage(file);
     } else {
-      alert("Please upload a valid image file (JPEG, PNG, GIF).");
+      alert('Please upload a valid image file (JPEG, PNG, GIF).');
     }
   };
 
@@ -67,15 +74,11 @@ const AddProducts = () => {
     formData.append('quantity', quantity);
     formData.append('colors', JSON.stringify(colors));
     formData.append('features', JSON.stringify(features));
+    formData.append('size', JSON.stringify(size));
     formData.append('image', image);
     formData.append('email', user.email);
     formData.append('shopId', shopId);
-  
-    
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ': ' + pair[1]);
-    }
-  
+
     try {
       const response = await axios.post('http://localhost:5001/api/products/add-products', formData, {
         headers: {
@@ -83,12 +86,23 @@ const AddProducts = () => {
         },
       });
       console.log(response.data);
+
+      // setCategory('');
+      // setSubcategory('');
+      // setProductName('');
+      // setPrice('');
+      // setQuantity('');
+      // setColors([]);
+      // setImage(null);
+      // setFeatures([]);
+      // setSize([]);
+
+      alert('Product added successfully!');
     } catch (error) {
-      console.error("Error submitting product:", error);
-      alert(`Error  ${error}`);
+      console.error('Error submitting product:', error);
+      alert(`Error: ${error}`);
     }
   };
-  
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -96,10 +110,10 @@ const AddProducts = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Category:</label>
-          <select 
-            value={category} 
-            onChange={(e) => setCategory(e.target.value)} 
-            required 
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
             <option value="">Select a Category</option>
@@ -113,10 +127,10 @@ const AddProducts = () => {
         {subcategories.length > 0 && (
           <div>
             <label className="block text-sm font-medium text-gray-700">Subcategory:</label>
-            <select 
-              value={subcategory} 
-              onChange={(e) => setSubcategory(e.target.value)} 
-              required 
+            <select
+              value={subcategory}
+              onChange={(e) => setSubcategory(e.target.value)}
+              required
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             >
               <option value="">Select a Subcategory</option>
@@ -130,65 +144,77 @@ const AddProducts = () => {
         )}
         <div>
           <label className="block text-sm font-medium text-gray-700">Product Name:</label>
-          <input 
-            type="text" 
-            value={productName} 
-            onChange={(e) => setProductName(e.target.value)} 
-            required 
+          <input
+            type="text"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Price:</label>
-          <input 
-            type="number" 
-            value={price} 
-            onChange={(e) => setPrice(e.target.value)} 
-            required 
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Quantity:</label>
-          <input 
-            type="number" 
-            value={quantity} 
-            onChange={(e) => setQuantity(e.target.value)} 
-            required 
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Colors (comma separated):</label>
-          <input 
-            type="text" 
-            value={colors.join(',')} 
-            onChange={handleColorChange} 
-            required 
+          <input
+            type="text"
+            value={colors.join(',')}
+            onChange={handleColorChange}
+            required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
+        {sizeCategories.includes(category) && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Size (comma separated):</label>
+            <input
+              type="text"
+              value={size.join(',')}
+              onChange={handleSizeChange}
+              required
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+        )}
         <div>
           <label className="block text-sm font-medium text-gray-700">Product Image:</label>
-          <input 
-            type="file" 
-            onChange={handleImageChange} 
-            required 
+          <input
+            type="file"
+            onChange={handleImageChange}
+            required
             className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:font-medium file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Features (comma separated):</label>
-          <input 
-            type="text" 
-            value={features.join(',')} 
-            onChange={handleFeaturesChange} 
-            required 
+          <label className="block text-sm font-medium text-gray-700">Features/Size (comma separated):</label>
+          <input
+            type="text"
+            value={features.join(',')}
+            onChange={handleFeaturesChange}
+            required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="mt-4 w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Add Product

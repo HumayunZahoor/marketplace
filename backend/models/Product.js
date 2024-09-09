@@ -23,7 +23,6 @@ const productSchema = new mongoose.Schema({
   },
   colors: { 
     type: [String], 
-    required: true 
   },
   image: { 
     type: String, 
@@ -31,7 +30,6 @@ const productSchema = new mongoose.Schema({
   },
   features: { 
     type: [String], 
-    required: true 
   },
   email: { 
     type: String, 
@@ -40,6 +38,17 @@ const productSchema = new mongoose.Schema({
   shopId: { 
     type: String, 
     required: true 
+  },
+  onSale: { 
+    type: String, 
+    default: false, 
+  },
+  priceOnSale: {
+    type: String,
+    default: null,
+  },
+  size: {
+    type: [String],
   }
 }, { timestamps: true });
 

@@ -58,7 +58,7 @@ const UpdateProducts = () => {
     for (const key in formData[productId]) {
       if (key === 'image') {
         productFormData.append(key, formData[productId][key]);
-      } else if (key === 'features' || key === 'colors') {
+      } else if (key === 'features' || key === 'colors' || key === 'size') {
         productFormData.append(key, JSON.stringify(formData[productId][key])); 
       } else {
         productFormData.append(key, formData[productId][key]);
@@ -159,6 +159,14 @@ const UpdateProducts = () => {
               name="features"
               placeholder="Features (comma separated)"
               defaultValue={product.features.join(',')}
+              onChange={(e) => handleArrayInputChange(e, product._id)}
+              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+            />
+            <input
+              type="text"
+              name="size"
+              placeholder="Size (comma separated)"
+              defaultValue={product.size.join(',')}
               onChange={(e) => handleArrayInputChange(e, product._id)}
               className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
             />

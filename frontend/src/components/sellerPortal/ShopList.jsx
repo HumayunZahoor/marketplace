@@ -39,6 +39,12 @@ const ShopList = () => {
     navigate('/UpdateProducts')
   }
 
+  const handleOnSaleProducts = (shopId) => {
+    dispatch(setShopId(shopId))
+    navigate('/ProductOnsale')
+  }
+
+
   return (
     <div className="flex flex-col items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md mt-6">
@@ -73,7 +79,7 @@ const ShopList = () => {
                 </div>
                 <button 
                   onClick={() => handleAddProductsClick(shop._id)}
-                  className='px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-800 inline-block text-center'>
+                  className='px-4 py-2 mt-2 bg-indigo-600 text-white rounded hover:bg-indigo-800 inline-block text-center'>
                     AddProducts
                 </button>
                 <button 
@@ -81,7 +87,15 @@ const ShopList = () => {
                   className='px-4 py-2 ml-2 bg-indigo-600 text-white rounded hover:bg-indigo-800 inline-block text-center'>
                     Update Product
                 </button>
+                <li>
+                <button 
+                  onClick={() => handleOnSaleProducts(shop._id)}
+                  className='px-4 py-2 ml-2 mt-2 bg-indigo-600 text-white rounded hover:bg-indigo-800 inline-block text-center'>
+                  Set Price and Product on Sale
+                  </button>
+                </li>
               </li>
+              
             ))}
           </ul>
         )}
