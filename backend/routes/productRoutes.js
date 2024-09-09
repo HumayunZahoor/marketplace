@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';  
-import { addProduct , getProductsByShop , updateProduct , deleteProduct , updateProductsOnSale} from '../controllers/productController.js';
+import { addProduct , getProductsByShop , updateProduct , deleteProduct , updateProductsOnSale , getAllProducts} from '../controllers/productController.js';
 
 const productRoutes = express.Router();
 
@@ -28,5 +28,7 @@ productRoutes.put('/update-product/:productId', upload.single('image'), updatePr
 productRoutes.delete('/delete-product/:productId', deleteProduct);
 
 productRoutes.put('/products-on-sale/:productId' , upload.single('image'), updateProductsOnSale);
+
+productRoutes.get('/product-by-category', getAllProducts);
 
 export default productRoutes;
