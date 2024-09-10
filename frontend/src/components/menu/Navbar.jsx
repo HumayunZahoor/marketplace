@@ -29,7 +29,7 @@ const Navbar = () => {
   return (
     <div className="bg-indigo-950 text-white py-4 px-8 sticky top-0 z-50">
       <div className="flex justify-between items-center h-full">
-        {/* Left side - Name */}
+        
         <div className="flex items-center">
           <Link
             to="/"

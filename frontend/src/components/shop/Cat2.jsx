@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate';
 
 const Cat2 = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // State to handle pagination
-  const [pageMen, setPageMen] = useState(1);
-  const [pageWomen, setPageWomen] = useState(1);
-  const [pageKids, setPageKids] = useState(1);
-  
-  // Items per page
+  const [pageMens, setPageMens] = useState(0);
+  const [pageWomens, setPageWomens] = useState(0);
+  const [pageKids, setPageKids] = useState(0);
+
   const itemsPerPage = 3;
 
   useEffect(() => {
@@ -35,120 +34,126 @@ const Cat2 = () => {
 
   const fashionProducts = products.filter((product) => product.category === 'Fashion');
 
-  // Helper function to paginate products
   const paginateProducts = (subcategory, page) => {
     const filteredProducts = fashionProducts.filter((product) => product.subcategory === subcategory);
-    const indexOfLastProduct = page * itemsPerPage;
+    const indexOfLastProduct = (page + 1) * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   };
 
-  // Function to render pagination buttons
-  const renderPagination = (subcategory, page, setPage) => {
+  const handlePageClick = (selectedPage, subcategory) => {
+    const newPage = selectedPage.selected;
+    if (subcategory === 'Men') setPageMens(newPage);
+    if (subcategory === 'Women') setPageWomens(newPage);
+    if (subcategory === 'Kids') setPageKids(newPage);
+  };
+
+  const renderPagination = (subcategory, currentPage) => {
     const totalProducts = fashionProducts.filter((product) => product.subcategory === subcategory).length;
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
-    const pages = [];
 
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(
-        <button
-          key={i}
-          className={`py-2 px-4 rounded ${i === page ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => setPage(i)}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    return <div className="flex space-x-2 mt-4">{pages}</div>;
+    return (
+      <ReactPaginate
+        pageCount={totalPages}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={(page) => handlePageClick(page, subcategory)}
+        containerClassName="flex justify-center space-x-2 mt-4"
+        pageClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        pageLinkClassName="flex items-center justify-center w-full h-full"
+        activeClassName="bg-blue-500 text-white border-blue-500"
+        previousLabel="Previous"
+        nextLabel="Next"
+        previousClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        nextClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        breakLabel="..."
+        breakClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700"
+      />
+    );
   };
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">Fashion</h1>
+      <h1 className="text-2xl font-bold mb-6">Fashions</h1>
 
-      {/* Men Section */}
-      {paginateProducts('Men', pageMen).length > 0 && (
+      {paginateProducts('Men', pageMens).length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Men</h2>
+          <h2 className="text-xl font-semibold mb-4">Mens</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginateProducts('Men', pageMen).map((product) => {
-              const imageUrl = `http://localhost:5001/uploads/${product.image}`;
+            {paginateProducts('Men', pageMens).map((men) => {
+              const imageUrl = `http://localhost:5001/uploads/${men.image}`;
               return (
-                <div key={product._id} className="bg-white p-4 rounded-lg shadow-md">
+                <div key={men._id} className="bg-white p-4 rounded-lg shadow-md">
                   <img 
                     src={imageUrl} 
-                    alt={product.productName} 
+                    alt={men.productName} 
                     className="h-48 w-full object-contain mb-4 rounded-md"
                     onError={() => { 
                       console.error('Image failed to load:', imageUrl);
                     }}
                   />
-                  <h3 className="text-lg font-semibold">{product.productName}</h3>
-                  <p>Price: ${product.price}</p>
-                  <p>Quantity: {product.quantity}</p>
+                  <h3 className="text-lg font-semibold">{men.productName}</h3>
+                  <p>Price: ${men.price}</p>
+                  <p>Quantity: {men.quantity}</p>
                 </div>
               );
             })}
           </div>
-          {renderPagination('Men', pageMen, setPageMen)}
+          {renderPagination('Men', pageMens)}
         </div>
       )}
 
-      {/* Women Section */}
-      {paginateProducts('Women', pageWomen).length > 0 && (
+      {paginateProducts('Women', pageWomens).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Women</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginateProducts('Women', pageWomen).map((product) => {
-              const imageUrl = `http://localhost:5001/uploads/${product.image}`;
+            {paginateProducts('Women', pageWomens).map((women) => {
+              const imageUrl = `http://localhost:5001/uploads/${women.image}`;
               return (
-                <div key={product._id} className="bg-white p-4 rounded-lg shadow-md">
+                <div key={women._id} className="bg-white p-4 rounded-lg shadow-md">
                   <img 
                     src={imageUrl} 
-                    alt={product.productName} 
+                    alt={women.productName} 
                     className="h-48 w-full object-contain mb-4 rounded-md"
                     onError={() => { 
                       console.error('Image failed to load:', imageUrl);
                     }}
                   />
-                  <h3 className="text-lg font-semibold">{product.productName}</h3>
-                  <p>Price: ${product.price}</p>
-                  <p>Quantity: {product.quantity}</p>
+                  <h3 className="text-lg font-semibold">{women.productName}</h3>
+                  <p>Price: ${women.price}</p>
+                  <p>Quantity: {women.quantity}</p>
                 </div>
               );
             })}
           </div>
-          {renderPagination('Women', pageWomen, setPageWomen)}
+          {renderPagination('Women', pageWomens)}
         </div>
       )}
 
-      {/* Kids Section */}
       {paginateProducts('Kids', pageKids).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Kids</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginateProducts('Kids', pageKids).map((product) => {
-              const imageUrl = `http://localhost:5001/uploads/${product.image}`;
+            {paginateProducts('Kids', pageKids).map((kids) => {
+              const imageUrl = `http://localhost:5001/uploads/${kids.image}`;
               return (
-                <div key={product._id} className="bg-white p-4 rounded-lg shadow-md">
+                <div key={kids._id} className="bg-white p-4 rounded-lg shadow-md">
                   <img 
                     src={imageUrl} 
-                    alt={product.productName} 
+                    alt={kids.productName} 
                     className="h-48 w-full object-contain mb-4 rounded-md"
                     onError={() => { 
                       console.error('Image failed to load:', imageUrl);
                     }}
                   />
-                  <h3 className="text-lg font-semibold">{product.productName}</h3>
-                  <p>Price: ${product.price}</p>
-                  <p>Quantity: {product.quantity}</p>
+                  <h3 className="text-lg font-semibold">{kids.productName}</h3>
+                  <p>Price: ${kids.price}</p>
+                  <p>Quantity: {kids.quantity}</p>
                 </div>
               );
             })}
           </div>
-          {renderPagination('Kids', pageKids, setPageKids)}
+          {renderPagination('Kids', pageKids)}
         </div>
       )}
     </div>

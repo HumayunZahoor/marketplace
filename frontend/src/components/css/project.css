@@ -52,3 +52,27 @@
 
 
 
+
+
+/* Ensure dots are visible */
+.slick-dots {
+  bottom: 10px;
+}
+
+.slick-dots li button:before {
+  color: #f00f0f; 
+  font-size: 14px;
+}
+
+
+.slick-prev, .slick-next {
+  z-index: 10; 
+}
+
+
+
+.slick-prev:before, .slick-next:before {
+  color: red;
+  
+}
+

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate';
 
 const Cat3 = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [pageFurniture, setPageFurniture] = useState(1);
-  const [pageDecore, setPageDecore] = useState(1);
-  const [pageGardening, setPageGardening] = useState(1);
+  const [pageFurniture, setPageFurniture] = useState(0);
+  const [pageDecore, setPageDecore] = useState(0);
+  const [pageGardening, setPageGardening] = useState(0);
 
   const itemsPerPage = 3;
 
@@ -35,29 +36,40 @@ const Cat3 = () => {
 
   const paginateProducts = (subcategory, page) => {
     const filteredProducts = homeAndGardenProducts.filter((product) => product.subcategory === subcategory);
-    const indexOfLastProduct = page * itemsPerPage;
+    const indexOfLastProduct = (page + 1) * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   };
 
-  const renderPagination = (subcategory, page, setPage) => {
+  const handlePageClick = (page, subcategory) => {
+    const selectedPage = page.selected;
+    if (subcategory === 'Furniture') setPageFurniture(selectedPage);
+    if (subcategory === 'Decor') setPageDecore(selectedPage);
+    if (subcategory === 'Gardening') setPageGardening(selectedPage);
+  };
+
+  const renderPagination = (subcategory, currentPage) => {
     const totalProducts = homeAndGardenProducts.filter((product) => product.subcategory === subcategory).length;
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
-    const pages = [];
 
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(
-        <button
-          key={i}
-          className={`py-2 px-4 rounded ${i === page ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => setPage(i)}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    return <div className="flex space-x-2 mt-4">{pages}</div>;
+    return (
+      <ReactPaginate
+        pageCount={totalPages}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={(page) => handlePageClick(page, subcategory)}
+        containerClassName="flex justify-center space-x-2 mt-4"
+        pageClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        pageLinkClassName="flex items-center justify-center w-full h-full"
+        activeClassName="bg-blue-500 text-white border-blue-500"
+        previousLabel="Previous"
+        nextLabel="Next"
+        previousClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        nextClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        breakLabel="..."
+        breakClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700"
+      />
+    );
   };
 
   return (
@@ -87,34 +99,34 @@ const Cat3 = () => {
               );
             })}
           </div>
-          {renderPagination('Furniture', pageFurniture, setPageFurniture)}
+          {renderPagination('Furniture', pageFurniture)}
         </div>
       )}
 
-      {paginateProducts('Decore', pageDecore).length > 0 && (
+      {paginateProducts('Decor', pageDecore).length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Decore</h2>
+          <h2 className="text-xl font-semibold mb-4">Decor</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginateProducts('Decore', pageDecore).map((decore) => {
-              const imageUrl = `http://localhost:5001/uploads/${decore.image}`;
+            {paginateProducts('Decor', pageDecore).map((decor) => {
+              const imageUrl = `http://localhost:5001/uploads/${decor.image}`;
               return (
-                <div key={decore._id} className="bg-white p-4 rounded-lg shadow-md">
+                <div key={decor._id} className="bg-white p-4 rounded-lg shadow-md">
                   <img 
                     src={imageUrl} 
-                    alt={decore.productName} 
+                    alt={decor.productName} 
                     className="h-48 w-full object-contain mb-4 rounded-md"
                     onError={(e) => { 
                       e.target.src = '/path/to/placeholder/image.jpg'; 
                     }}
                   />
-                  <h3 className="text-lg font-semibold">{decore.productName}</h3>
-                  <p>Price: ${decore.price}</p>
-                  <p>Quantity: {decore.quantity}</p>
+                  <h3 className="text-lg font-semibold">{decor.productName}</h3>
+                  <p>Price: ${decor.price}</p>
+                  <p>Quantity: {decor.quantity}</p>
                 </div>
               );
             })}
           </div>
-          {renderPagination('Decore', pageDecore, setPageDecore)}
+          {renderPagination('Decor', pageDecore)}
         </div>
       )}
 
@@ -141,7 +153,7 @@ const Cat3 = () => {
               );
             })}
           </div>
-          {renderPagination('Gardening', pageGardening, setPageGardening)}
+          {renderPagination('Gardening', pageGardening)}
         </div>
       )}
     </div>

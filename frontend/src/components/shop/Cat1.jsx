@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate';
 
 const Cat1 = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  
-  const [pagePhones, setPagePhones] = useState(1);
-  const [pageLaptops, setPageLaptops] = useState(1);
-  const [pageCameras, setPageCameras] = useState(1);
+  const [pagePhones, setPagePhones] = useState(0);
+  const [pageLaptops, setPageLaptops] = useState(0);
+  const [pageCameras, setPageCameras] = useState(0);
 
-  
   const itemsPerPage = 3;
 
   useEffect(() => {
@@ -35,40 +34,48 @@ const Cat1 = () => {
 
   const electronicsProducts = products.filter((product) => product.category === 'Electronics');
 
- 
   const paginateProducts = (subcategory, page) => {
     const filteredProducts = electronicsProducts.filter((product) => product.subcategory === subcategory);
-    const indexOfLastProduct = page * itemsPerPage;
+    const indexOfLastProduct = (page + 1) * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     return filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   };
 
-  
-  const renderPagination = (subcategory, page, setPage) => {
+  const handlePageClick = (selectedPage, subcategory) => {
+    const newPage = selectedPage.selected;
+    if (subcategory === 'Phones') setPagePhones(newPage);
+    if (subcategory === 'Laptops') setPageLaptops(newPage);
+    if (subcategory === 'Cameras') setPageCameras(newPage);
+  };
+
+  const renderPagination = (subcategory, currentPage) => {
     const totalProducts = electronicsProducts.filter((product) => product.subcategory === subcategory).length;
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
-    const pages = [];
 
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(
-        <button
-          key={i}
-          className={`py-2 px-4 rounded ${i === page ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => setPage(i)}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    return <div className="flex space-x-2 mt-4">{pages}</div>;
+    return (
+      <ReactPaginate
+        pageCount={totalPages}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={(page) => handlePageClick(page, subcategory)}
+        containerClassName="flex justify-center space-x-2 mt-4"
+        pageClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        pageLinkClassName="flex items-center justify-center w-full h-full"
+        activeClassName="bg-blue-500 text-white border-blue-500"
+        previousLabel="Previous"
+        nextLabel="Next"
+        previousClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        nextClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+        breakLabel="..."
+        breakClassName="inline-flex items-center justify-center w-auto h-auto rounded-md border border-gray-300 bg-white text-gray-700"
+      />
+    );
   };
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Electronics</h1>
 
-      
       {paginateProducts('Phones', pagePhones).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Phones</h2>
@@ -92,11 +99,10 @@ const Cat1 = () => {
               );
             })}
           </div>
-          {renderPagination('Phones', pagePhones, setPagePhones)}
+          {renderPagination('Phones', pagePhones)}
         </div>
       )}
 
-      
       {paginateProducts('Laptops', pageLaptops).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Laptops</h2>
@@ -120,11 +126,10 @@ const Cat1 = () => {
               );
             })}
           </div>
-          {renderPagination('Laptops', pageLaptops, setPageLaptops)}
+          {renderPagination('Laptops', pageLaptops)}
         </div>
       )}
 
-      
       {paginateProducts('Cameras', pageCameras).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Cameras</h2>
@@ -148,7 +153,7 @@ const Cat1 = () => {
               );
             })}
           </div>
-          {renderPagination('Cameras', pageCameras, setPageCameras)}
+          {renderPagination('Cameras', pageCameras)}
         </div>
       )}
     </div>
