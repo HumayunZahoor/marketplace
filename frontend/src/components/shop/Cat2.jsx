@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+import { FaShoppingCart, FaHeart } from 'react-icons/fa';
 
 const Cat2 = () => {
   const [products, setProducts] = useState([]);
@@ -83,18 +84,32 @@ const Cat2 = () => {
             {paginateProducts('Men', pageMens).map((men) => {
               const imageUrl = `http://localhost:5001/uploads/${men.image}`;
               return (
-                <div key={men._id} className="bg-white p-4 rounded-lg shadow-md">
+                <div key={men._id} className="bg-white p-4 rounded-lg shadow-md relative">
+                <div className='relative'>
                   <img 
                     src={imageUrl} 
                     alt={men.productName} 
-                    className="h-48 w-full object-contain mb-4 rounded-md"
+                    className="h-48 w-full object-fit rounded-md"
                     onError={() => { 
                       console.error('Image failed to load:', imageUrl);
                     }}
                   />
+                  <div className="absolute top-0 right-0 p-2 bg-white text-indigo-950 m-1 text-2xl rounded-3xl font-serif font-bold ">
+                      ${men.price}
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-end space-x-2 mt-3">
+                  <button className="p-2 w-[150px] h-[40px] bg-indigo-950 text-white rounded-md hover:bg-indigo-700 transition-colors duration-300 flex items-center justify-center">
+                    <FaShoppingCart className="text-xl" />
+                  </button>                  
+                  <button className="p-2 w-[150px] h-[40px] bg-indigo-950 text-white rounded-md hover:bg-indigo-700 transition-colors duration-300 flex items-center justify-center">
+                    <FaHeart className="text-xl" />
+                  </button> 
+                </div>
+                <div className="flex justify-between items-end mt-4">
                   <h3 className="text-lg font-semibold">{men.productName}</h3>
-                  <p>Price: ${men.price}</p>
-                  <p>Quantity: {men.quantity}</p>
+                  <p className="text-lg font-semibold">Quantity: {men.quantity}</p>
+                </div>
                 </div>
               );
             })}
