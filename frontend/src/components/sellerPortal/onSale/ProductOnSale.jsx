@@ -26,18 +26,27 @@ const ProductOnSale = () => {
   // Handle input changes for each product
   const handleInputChange = (e, productId) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [productId]: {
-        ...prevData[productId],
-        [name]: type === 'checkbox' ? checked : value,
-      },
-    }));
+    setFormData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        [productId]: {
+          ...prevData[productId],
+          [name]: type === 'checkbox' ? checked : value,
+        },
+      };
+
+      // Reset priceOnSale if onSale is unchecked
+      if (name === 'onSale' && !checked) {
+        updatedData[productId].priceOnSale = ''; // Clear priceOnSale when not on sale
+      }
+
+      return updatedData;
+    });
   };
 
   // Handle product update
   const handleUpdateProduct = async (productId) => {
-    const productData = formData[productId];
+    const productData = formData[productId] || {};
     try {
       await axios.put(
         `http://localhost:5001/api/products/products-on-sale/${productId}`,
@@ -93,6 +102,7 @@ const ProductOnSale = () => {
               name="priceOnSale"
               placeholder="Discount Percentage (e.g. 30)"
               onChange={(e) => handleInputChange(e, product._id)}
+              value={formData[product._id]?.priceOnSale || ''}
               className="mt-1 block w-96 p-2 border border-gray-300 rounded-md shadow-sm"
               disabled={!formData[product._id]?.onSale}
             />

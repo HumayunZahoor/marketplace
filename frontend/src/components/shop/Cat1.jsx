@@ -12,7 +12,7 @@ const Cat1 = () => {
   const [pageLaptops, setPageLaptops] = useState(0);
   const [pageCameras, setPageCameras] = useState(0);
 
-  const [likedItems, setLikedItems] = useState();
+  const [likedItems, setLikedItems] = useState(new Set());
 
   const itemsPerPage = 4;
 
@@ -51,16 +51,23 @@ const Cat1 = () => {
     if (subcategory === 'Cameras') setPageCameras(newPage);
   };
 
+  const handleIconClick = (productId) => {
+    setLikedItems((prevLikedItems) => {
+      const newLikedItems = new Set(prevLikedItems);
+      if (newLikedItems.has(productId)) {
+        newLikedItems.delete(productId);
+      } else {
+        newLikedItems.add(productId);
+      }
+      return newLikedItems;
+    });
+  };
+
   const renderPagination = (subcategory, currentPage) => {
     const totalProducts = electronicsProducts.filter((product) => product.subcategory === subcategory).length;
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
-    const handleClick = (productId) => {
-      setLikedItems((prevLikedItems) => ({
-        ...prevLikedItems,
-        [productId]: !prevLikedItems[productId], 
-      }));
-    };
+    
 
     return (
       <ReactPaginate
@@ -103,23 +110,33 @@ const Cat1 = () => {
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
-                    <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700  text-white rounded-s-3xl font-serif font-bold">
+                   {/* <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700  text-white rounded-s-3xl font-serif font-bold">
                       ${phone.price}
-                    </div>
-                    {phone.onSale === 'true' && (
-                      <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800  text-white rounded-e-3xl font-serif font-bold">
-                        -{phone.priceOnSale}%
+                    </div> */}
+                    {phone.onSale === 'true' ? (
+                      <>
+                        <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
+                          -{phone.priceOnSale}%
+                        </div>
+                        <div className="absolute top-0 right-0 p-1 mt-1 bg-green-800 text-white rounded-s-3xl font-serif font-bold">
+                          ${phone.price}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold">
+                        ${phone.price}
                       </div>
                     )}
+                    
                   </div>
-                  <div className="flex justify-between items-end space-x-2 mt-3">
+                  <div className="flex justify-end items-end space-x-2 mt-3">
                     <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl  hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
-                      <FaShoppingCart className="text-2xl" />
-                      <span className="font-serif text-indigo-950 ml-2">Add</span>
+                      <FaShoppingCart className="text-3xl" />
                     </button>      
-                    <button className="p-2 w-uto h-auto text-white rounded-3xl transition-colors duration-300 flex items-center justify-center">
-                      <FaHeart className="text-2xl text-indigo-950 " />
-                    </button> 
+                    <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
+                            onClick={() => handleIconClick(phone._id)}>
+                      <FaHeart className={`text-3xl ${likedItems.has(phone._id) ? 'text-red-700' : 'text-red-400'}`} />
+                    </button>  
                   </div>
                   <div className="flex justify-between items-end mt-4">
                     <h3 className="text-lg text-indigo-950 font-semibold">{phone.productName}</h3>
@@ -150,23 +167,29 @@ const Cat1 = () => {
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
-                    <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold ">
-                      ${laptop.price}
-                    </div>
-                    {laptop.onSale === 'true' && (
-                      <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800  text-white rounded-e-3xl font-serif font-bold">
-                        -{laptop.priceOnSale}%
+                    {laptop.onSale === 'true' ? (
+                      <>
+                        <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
+                          -{laptop.priceOnSale}%
+                        </div>
+                        <div className="absolute top-0 right-0 p-1 mt-1 bg-green-800 text-white rounded-s-3xl font-serif font-bold">
+                          ${laptop.price}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold">
+                        ${laptop.price}
                       </div>
                     )}
                   </div>
-                  <div className="flex justify-between items-end space-x-2 mt-3">
+                  <div className="flex justify-end items-end space-x-2 mt-3">
                     <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
-                      <FaShoppingCart className="text-2xl" />
-                      <span className="font-serif text-indigo-950 ml-2">Add</span>
+                      <FaShoppingCart className="text-3xl" />
                     </button>      
-                    <button className="p-2 w-uto h-auto text-white rounded-3xl transition-colors duration-300 flex items-center justify-center">
-                      <FaHeart className="text-2xl text-indigo-950 " />
-                    </button> 
+                    <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
+                            onClick={() => handleIconClick(phone._id)}>
+                      <FaHeart className={`text-3xl ${likedItems.has(laptop._id) ? 'text-red-700' : 'text-red-400'}`} />
+                    </button>  
                   </div>
                   <div className="flex justify-between items-end mt-4">
                     <h3 className="text-lg text-indigo-950 font-semibold">{laptop.productName}</h3>
@@ -197,23 +220,29 @@ const Cat1 = () => {
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
-                    <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold">
-                      ${camera.price}
-                    </div>
-                    {camera.onSale === 'true' && (
-                      <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800  text-white rounded-e-3xl font-serif font-bold">
-                        -{camera.priceOnSale}%
+                     {camera.onSale === 'true' ? (
+                      <>
+                        <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
+                          -{camera.priceOnSale}%
+                        </div>
+                        <div className="absolute top-0 right-0 p-1 mt-1 bg-green-800 text-white rounded-s-3xl font-serif font-bold">
+                          ${camera.price}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold">
+                        ${camera.price}
                       </div>
                     )}
                   </div>
-                  <div className="flex justify-between items-end space-x-2 mt-3">
+                  <div className="flex justify-end items-end space-x-2 mt-3">
                     <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl  hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
-                      <FaShoppingCart className="text-2xl" />
-                      <span className="font-serif text-indigo-950 ml-2">Add</span>
+                      <FaShoppingCart className="text-3xl" />
                     </button>      
-                    <button className="p-2 w-uto h-auto text-white rounded-3xl transition-colors duration-300 flex items-center justify-center">
-                      <FaHeart className="text-2xl text-indigo-950 " />
-                    </button> 
+                    <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
+                            onClick={() => handleIconClick(phone._id)}>
+                      <FaHeart className={`text-3xl ${likedItems.has(camera._id) ? 'text-red-700' : 'text-red-400'}`} />
+                    </button>  
                   </div>
                   <div className="flex justify-between items-end mt-4">
                     <h3 className="text-lg text-indigo-950 font-semibold">{camera.productName}</h3>

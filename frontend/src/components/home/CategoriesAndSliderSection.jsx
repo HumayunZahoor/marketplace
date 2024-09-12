@@ -39,7 +39,7 @@ const CategoriesAndSliderSection = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000, 
@@ -96,19 +96,19 @@ const CategoriesAndSliderSection = () => {
 
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40 bg-transparent rounded-full flex items-center justify-center border-2 border-indigo-950 z-20 md:overflow-hidden overflow-hidden ">
           <span className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-indigo-950">
-            {getPriceOnSale()}
+            -{getPriceOnSale()}%
           </span>
         </div>
 
-        <div className="relative md:w-8/12 w-7/12 lg:w-8/12 overflow-hidden h-[300px] md:h-[400px] lg:h-[400px] p-0">
-          <div className="absolute inset-0 z-0 rounded-lg p-0 ">
+        <div className="relative md:w-8/12 w-7/12 lg:w-8/12 overflow-hidden h-[300px] md:h-[400px] lg:h-[400px] p-0 rounded-2xl">
+          <div className="absolute inset-0 z-0 rounded-2xl p-0 ">
             <Slider {...settings}>
               {onSaleProducts.map(product => (
-                <div key={product._id} className="p-0 h-96 ">
+                <div key={product._id} className="p-0 h-96 rounded-2xl">
                   <img 
                     src={`http://localhost:5001/uploads/${product.image}`} 
                     alt={product.productName} 
-                    className="w-full h-full object-fit p-1 rounded"
+                    className="w-full h-full object-fit rounded-2xl "
                   />
                 </div>
               ))}

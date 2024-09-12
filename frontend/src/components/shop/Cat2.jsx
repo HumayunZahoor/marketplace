@@ -96,13 +96,18 @@ const Cat2 = () => {
                       console.error('Image failed to load:', imageUrl);
                     }}
                   />
-                  
-                    <div className="absolute top-0 right-0 p-1 mt-1 bg-gray-500 bg-opacity-50 text-indigo-950 rounded-s-3xl font-serif font-bold ">
+                  {men.onSale === 'true' ? (
+                    <>
+                      <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
+                        -{men.priceOnSale}%
+                      </div>
+                      <div className="absolute top-0 right-0 p-1 mt-1 bg-green-800 text-white rounded-s-3xl font-serif font-bold">
+                        ${men.price}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold">
                       ${men.price}
-                    </div>
-                  {men.onSale === 'true' && (
-                    <div className="absolute top-0 left-0 p-1 mt-1 bg-indigo-950  text-white rounded-e-3xl font-serif font-bold ">
-                      {men.priceOnSale}
                     </div>
                   )}
                   </div>
@@ -152,14 +157,20 @@ const Cat2 = () => {
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
-                    <div className="absolute top-0 right-0 p-1 mt-1 bg-gray-500 bg-opacity-50 text-indigo-950 rounded-s-3xl font-serif font-bold ">
-                    ${women.price}
-                  </div>
-                {women.onSale === 'true' && (
-                  <div className="absolute top-0 left-0 p-1 mt-1 bg-indigo-950  text-white rounded-e-3xl font-serif font-bold">
-                    {women.priceOnSale}
-                  </div>
-                )}
+                     {women.onSale === 'true' ? (
+                      <>
+                        <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
+                          -{women.priceOnSale}%
+                        </div>
+                        <div className="absolute top-0 right-0 p-1 mt-1 bg-green-800 text-white rounded-s-3xl font-serif font-bold">
+                          ${women.price}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold">
+                        ${women.price}
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-between items-end space-x-2 mt-3">
                     <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
@@ -208,14 +219,20 @@ const Cat2 = () => {
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
-                    <div className="absolute top-0 right-0 p-1 mt-1 bg-gray-500 bg-opacity-50 text-indigo-950 rounded-s-3xl font-serif font-bold ">
-                    ${kids.price}
-                  </div>
-                {kids.onSale === 'true' && (
-                  <div className="absolute top-0 left-0 p-1 mt-1 bg-indigo-950  text-white rounded-e-3xl font-serif font-bold">
-                    {kids.priceOnSale}
-                  </div>
-                )}
+                     {kids.onSale === 'true' ? (
+                      <>
+                        <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
+                          -{kids.priceOnSale}%
+                        </div>
+                        <div className="absolute top-0 right-0 p-1 mt-1 bg-green-800 text-white rounded-s-3xl font-serif font-bold">
+                          ${kids.price}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700 text-white rounded-s-3xl font-serif font-bold">
+                        ${kids.price}
+                      </div>
+                    )}
                   </div>
                   <div className="flex justify-between items-end space-x-2 mt-3">
                     <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">

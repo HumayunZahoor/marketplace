@@ -205,13 +205,11 @@ export const deleteProduct = async (req, res) => {
 //   }
 // };
 
-
 export const updateProductsOnSale = async (req, res) => {
   try {
     const { productId } = req.params;
     const { priceOnSale, onSale } = req.body;
 
-    // Fetch the current product data from the database
     const currentProduct = await Product.findById(productId);
 
     if (!currentProduct) {
@@ -220,8 +218,9 @@ export const updateProductsOnSale = async (req, res) => {
 
     const originalPrice = currentProduct.price;
 
-    // If the onSale status is true, calculate the discounted price
+    // Check if the product is on sale
     if (onSale) {
+      // Product is on sale
       if (priceOnSale !== undefined && priceOnSale !== null) {
         const discountPercentage = parseFloat(priceOnSale);
 
@@ -229,10 +228,8 @@ export const updateProductsOnSale = async (req, res) => {
           return res.status(400).json({ message: 'Invalid priceOnSale value. It should be a percentage between 0 and 100.' });
         }
 
-        // Calculate the discounted price
         const discountedPrice = originalPrice - (originalPrice * (discountPercentage / 100));
 
-        // Update the price and priceOnSale in the database
         const updatedProduct = await Product.findByIdAndUpdate(
           productId,
           { price: discountedPrice, priceOnSale: discountPercentage, onSale },
@@ -244,10 +241,10 @@ export const updateProductsOnSale = async (req, res) => {
         return res.status(400).json({ message: 'priceOnSale is required to calculate the discount' });
       }
     } else {
-      // If onSale is false, don't update the price, but update other fields like onSale status
+      // Product is not on sale
       const updatedProduct = await Product.findByIdAndUpdate(
         productId,
-        { onSale },
+        { price: originalPrice, priceOnSale: null, onSale: false },
         { new: true }
       );
 
@@ -258,8 +255,6 @@ export const updateProductsOnSale = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
 
 
 //-----------------------------------------------
