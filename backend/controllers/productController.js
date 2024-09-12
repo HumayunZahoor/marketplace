@@ -170,40 +170,96 @@ export const deleteProduct = async (req, res) => {
 
 //-------------------------------------------
 
+// export const updateProductsOnSale = async (req, res) => {
+//   try {
+//     const { productId } = req.params;
+//     const { category, subcategory, productName, price, onSale, priceOnSale } = req.body;
+
+//     const updatedData = {
+//       category,
+//       subcategory,
+//       productName,
+//       onSale,
+//       priceOnSale,
+//     };
+
+//     if (price) {
+//       const priceValue = parseFloat(price);
+//       if (!isNaN(priceValue)) {
+//         updatedData.price = priceValue;
+//       } else {
+//         return res.status(400).json({ message: 'Invalid price value' });
+//       }
+//     }
+
+//     const updatedProduct = await Product.findByIdAndUpdate(productId, updatedData, { new: true });
+
+//     if (!updatedProduct) {
+//       return res.status(404).json({ message: 'Product not found' });
+//     }
+
+//     res.json(updatedProduct);
+//   } catch (error) {
+//     console.error('Error updating product:', error);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
+
+
 export const updateProductsOnSale = async (req, res) => {
   try {
     const { productId } = req.params;
-    const { category, subcategory, productName, price, onSale, priceOnSale } = req.body;
+    const { priceOnSale, onSale } = req.body;
 
-    const updatedData = {
-      category,
-      subcategory,
-      productName,
-      onSale,
-      priceOnSale,
-    };
+    // Fetch the current product data from the database
+    const currentProduct = await Product.findById(productId);
 
-    if (price) {
-      const priceValue = parseFloat(price);
-      if (!isNaN(priceValue)) {
-        updatedData.price = priceValue;
-      } else {
-        return res.status(400).json({ message: 'Invalid price value' });
-      }
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(productId, updatedData, { new: true });
-
-    if (!updatedProduct) {
+    if (!currentProduct) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    res.json(updatedProduct);
+    const originalPrice = currentProduct.price;
+
+    // If the onSale status is true, calculate the discounted price
+    if (onSale) {
+      if (priceOnSale !== undefined && priceOnSale !== null) {
+        const discountPercentage = parseFloat(priceOnSale);
+
+        if (isNaN(discountPercentage) || discountPercentage < 0 || discountPercentage > 100) {
+          return res.status(400).json({ message: 'Invalid priceOnSale value. It should be a percentage between 0 and 100.' });
+        }
+
+        // Calculate the discounted price
+        const discountedPrice = originalPrice - (originalPrice * (discountPercentage / 100));
+
+        // Update the price and priceOnSale in the database
+        const updatedProduct = await Product.findByIdAndUpdate(
+          productId,
+          { price: discountedPrice, priceOnSale: discountPercentage, onSale },
+          { new: true }
+        );
+
+        return res.json(updatedProduct);
+      } else {
+        return res.status(400).json({ message: 'priceOnSale is required to calculate the discount' });
+      }
+    } else {
+      // If onSale is false, don't update the price, but update other fields like onSale status
+      const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        { onSale },
+        { new: true }
+      );
+
+      return res.json(updatedProduct);
+    }
   } catch (error) {
     console.error('Error updating product:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
 
 
 //-----------------------------------------------

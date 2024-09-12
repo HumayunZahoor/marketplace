@@ -7,6 +7,7 @@ const ProductOnSale = () => {
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({});
 
+  // Fetch products by shop ID
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -22,31 +23,31 @@ const ProductOnSale = () => {
     }
   }, [shopId]);
 
+  // Handle input changes for each product
   const handleInputChange = (e, productId) => {
-    const { name, value } = e.target;
-
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [productId]: {
         ...prevData[productId],
-        [name]: value,
+        [name]: type === 'checkbox' ? checked : value,
       },
     }));
   };
 
+  // Handle product update
   const handleUpdateProduct = async (productId) => {
-    const productFormData = new FormData();
-
-    for (const key in formData[productId]) {
-      productFormData.append(key, formData[productId][key]);
-    }
-
+    const productData = formData[productId];
     try {
-      await axios.put(`http://localhost:5001/api/products/products-on-sale/${productId}`, productFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      await axios.put(
+        `http://localhost:5001/api/products/products-on-sale/${productId}`,
+        productData, // send as JSON
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       alert('Product updated successfully!');
     } catch (error) {
       console.error('Error updating product:', error);
@@ -71,53 +72,42 @@ const ProductOnSale = () => {
 
             <input
               type="text"
-              name="category"
-              placeholder="Category"
-              defaultValue={product.category}
-              onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96 p-2 border border-gray-300 rounded-md shadow-sm"
-            />
-            <input
-              type="text"
-              name="subcategory"
-              placeholder="Subcategory"
-              defaultValue={product.subcategory}
-              onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96 p-2 border border-gray-300 rounded-md shadow-sm"
-            />
-            <input
-              type="text"
               name="productName"
               placeholder="Product Name"
               defaultValue={product.productName}
               onChange={(e) => handleInputChange(e, product._id)}
               className="mt-1 block w-96 p-2 border border-gray-300 rounded-md shadow-sm"
             />
+
             <input
               type="number"
               name="price"
-              placeholder="Price On Sale"
+              placeholder="Original Price"
               defaultValue={product.price}
-              onChange={(e) => handleInputChange(e, product._id)}
+              disabled
               className="mt-1 block w-96 p-2 border border-gray-300 rounded-md shadow-sm"
             />
+
             <input
-              type="text"
-              name="onSale"
-              placeholder="Set to true"
-              defaultValue={product.onSale}
-              onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96 p-2 border border-gray-300 rounded-md shadow-sm"
-            />
-            <input
-              type="text"
+              type="number"
               name="priceOnSale"
-              placeholder="Set Percentage on sale (-30% etc)"
-              defaultValue={product.priceOnSale}
+              placeholder="Discount Percentage (e.g. 30)"
               onChange={(e) => handleInputChange(e, product._id)}
               className="mt-1 block w-96 p-2 border border-gray-300 rounded-md shadow-sm"
+              disabled={!formData[product._id]?.onSale}
             />
-          
+
+            <label className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                name="onSale"
+                onChange={(e) => handleInputChange(e, product._id)}
+                checked={formData[product._id]?.onSale || false}
+                className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+              />
+              <span className="ml-2 text-gray-700">On Sale</span>
+            </label>
+
             <button
               type="button"
               onClick={() => handleUpdateProduct(product._id)}

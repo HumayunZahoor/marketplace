@@ -12,7 +12,7 @@ const Cat2 = () => {
   const [pageWomens, setPageWomens] = useState(0);
   const [pageKids, setPageKids] = useState(0);
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 4;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -73,6 +73,8 @@ const Cat2 = () => {
     );
   };
 
+  
+
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Fashions</h1>
@@ -80,7 +82,7 @@ const Cat2 = () => {
       {paginateProducts('Men', pageMens).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Mens</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {paginateProducts('Men', pageMens).map((men) => {
               const imageUrl = `http://localhost:5001/uploads/${men.image}`;
               return (
@@ -94,22 +96,37 @@ const Cat2 = () => {
                       console.error('Image failed to load:', imageUrl);
                     }}
                   />
-                  <div className="absolute top-0 right-0 p-2 bg-white text-indigo-950 m-1 text-2xl rounded-3xl font-serif font-bold ">
+                  
+                    <div className="absolute top-0 right-0 p-1 mt-1 bg-gray-500 bg-opacity-50 text-indigo-950 rounded-s-3xl font-serif font-bold ">
                       ${men.price}
                     </div>
+                  {men.onSale === 'true' && (
+                    <div className="absolute top-0 left-0 p-1 mt-1 bg-indigo-950  text-white rounded-e-3xl font-serif font-bold ">
+                      {men.priceOnSale}
+                    </div>
+                  )}
                   </div>
                   <div className="flex justify-between items-end space-x-2 mt-3">
-                  <button className="p-2 w-[150px] h-[40px] bg-indigo-950 text-white rounded-md hover:bg-indigo-700 transition-colors duration-300 flex items-center justify-center">
-                    <FaShoppingCart className="text-xl" />
-                  </button>                  
-                  <button className="p-2 w-[150px] h-[40px] bg-indigo-950 text-white rounded-md hover:bg-indigo-700 transition-colors duration-300 flex items-center justify-center">
-                    <FaHeart className="text-xl" />
-                  </button> 
-                </div>
+                    <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl  hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
+                      <FaShoppingCart className="text-2xl" />
+                      <span className="font-serif text-indigo-950 ml-2">Add</span>
+                    </button>      
+                    <button className="p-2 w-uto h-auto text-white rounded-3xl transition-colors duration-300 flex items-center justify-center">
+                      <FaHeart className="text-2xl text-indigo-950 " />
+                    </button> 
+                  </div>
                 <div className="flex justify-between items-end mt-4">
-                  <h3 className="text-lg font-semibold">{men.productName}</h3>
-                  <p className="text-lg font-semibold">Quantity: {men.quantity}</p>
+                  <h3 className="text-lg text-indigo-950 font-semibold">{men.productName}</h3>
+                  <p className="text-lg text-indigo-950 font-semibold">Quantity: {men.quantity}</p>
                 </div>
+                <p className="text-lg text-indigo-950 font-semibold">Features: {men.features.join(',')}</p>
+                <p className="text-lg text-indigo-950 font-semibold">Color: {men.colors.join(',')}</p> 
+                <p className="text-lg text-indigo-950 font-semibold">Email: {men.email}</p>
+                <p className="text-lg text-indigo-950 font-semibold">ShopID: {men.shopId}</p>
+                <p className="text-lg text-indigo-950 font-semibold">Category: {men.category} = {men.subcategory}</p>
+                <p className="text-lg text-indigo-950 font-semibold">On Sale: {men.onSale}</p>
+                <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {men.priceOnSale}</p>
+                <p className="text-lg text-indigo-950 font-semibold">Size: {men.size.join(',')}</p> 
                 </div>
               );
             })}
@@ -121,22 +138,51 @@ const Cat2 = () => {
       {paginateProducts('Women', pageWomens).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Women</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {paginateProducts('Women', pageWomens).map((women) => {
               const imageUrl = `http://localhost:5001/uploads/${women.image}`;
               return (
-                <div key={women._id} className="bg-white p-4 rounded-lg shadow-md">
-                  <img 
-                    src={imageUrl} 
-                    alt={women.productName} 
-                    className="h-48 w-full object-contain mb-4 rounded-md"
-                    onError={() => { 
-                      console.error('Image failed to load:', imageUrl);
-                    }}
-                  />
-                  <h3 className="text-lg font-semibold">{women.productName}</h3>
-                  <p>Price: ${women.price}</p>
-                  <p>Quantity: {women.quantity}</p>
+                <div key={women._id} className="bg-white p-4 rounded-lg shadow-md relative">
+                  <div className="relative">
+                    <img 
+                      src={imageUrl} 
+                      alt={women.productName} 
+                      className="h-48 w-full object-fit rounded-md"
+                      onError={() => { 
+                        console.error('Image failed to load:', imageUrl);
+                      }}
+                    />
+                    <div className="absolute top-0 right-0 p-1 mt-1 bg-gray-500 bg-opacity-50 text-indigo-950 rounded-s-3xl font-serif font-bold ">
+                    ${women.price}
+                  </div>
+                {women.onSale === 'true' && (
+                  <div className="absolute top-0 left-0 p-1 mt-1 bg-indigo-950  text-white rounded-e-3xl font-serif font-bold">
+                    {women.priceOnSale}
+                  </div>
+                )}
+                  </div>
+                  <div className="flex justify-between items-end space-x-2 mt-3">
+                    <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
+                      <FaShoppingCart className="text-2xl" />
+                      <span className="font-serif text-indigo-950 ml-2">Add</span>
+                    </button>      
+                    <button className="p-2 w-uto h-auto text-white rounded-3xl transition-colors duration-300 flex items-center justify-center">
+                      <FaHeart className="text-2xl text-indigo-950 " />
+                    </button> 
+                  </div>
+                  <div className="flex justify-between items-end mt-4">
+                    <h3 className="text-lg text-indigo-950 font-semibold">{women.productName}</h3>
+                    <p className="text-lg text-indigo-950 font-semibold">Left in Stock: {women.quantity}</p>
+                  
+                  </div>
+                   <p className="text-lg text-indigo-950 font-semibold">Features: {women.features.join(',')}</p>
+                    <p className="text-lg text-indigo-950 font-semibold">Color: {women.colors.join(',')}</p> 
+                    <p className="text-lg text-indigo-950 font-semibold">Email: {women.email}</p>
+                    <p className="text-lg text-indigo-950 font-semibold">ShopID: {women.shopId}</p>
+                    <p className="text-lg text-indigo-950 font-semibold">Category: {women.category} = {women.subcategory}</p>
+                    <p className="text-lg text-indigo-950 font-semibold">On Sale: {women.onSale}</p>
+                    <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {women.priceOnSale}</p>
+                    <p className="text-lg text-indigo-950 font-semibold">Size: {women.size.join(',')}</p> 
                 </div>
               );
             })}
@@ -148,22 +194,50 @@ const Cat2 = () => {
       {paginateProducts('Kids', pageKids).length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Kids</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {paginateProducts('Kids', pageKids).map((kids) => {
               const imageUrl = `http://localhost:5001/uploads/${kids.image}`;
               return (
-                <div key={kids._id} className="bg-white p-4 rounded-lg shadow-md">
-                  <img 
-                    src={imageUrl} 
-                    alt={kids.productName} 
-                    className="h-48 w-full object-contain mb-4 rounded-md"
-                    onError={() => { 
-                      console.error('Image failed to load:', imageUrl);
-                    }}
-                  />
-                  <h3 className="text-lg font-semibold">{kids.productName}</h3>
-                  <p>Price: ${kids.price}</p>
-                  <p>Quantity: {kids.quantity}</p>
+                <div key={kids._id} className="bg-white p-4 rounded-lg shadow-md relative">
+                  <div className="relative">
+                    <img 
+                      src={imageUrl} 
+                      alt={kids.productName} 
+                      className="h-48 w-full object-fit rounded-md"
+                      onError={() => { 
+                        console.error('Image failed to load:', imageUrl);
+                      }}
+                    />
+                    <div className="absolute top-0 right-0 p-1 mt-1 bg-gray-500 bg-opacity-50 text-indigo-950 rounded-s-3xl font-serif font-bold ">
+                    ${kids.price}
+                  </div>
+                {kids.onSale === 'true' && (
+                  <div className="absolute top-0 left-0 p-1 mt-1 bg-indigo-950  text-white rounded-e-3xl font-serif font-bold">
+                    {kids.priceOnSale}
+                  </div>
+                )}
+                  </div>
+                  <div className="flex justify-between items-end space-x-2 mt-3">
+                    <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
+                      <FaShoppingCart className="text-2xl" />
+                      <span className="font-serif text-indigo-950 ml-2">Add</span>
+                    </button>      
+                    <button className="p-2 w-uto h-auto text-white rounded-3xl transition-colors duration-300 flex items-center justify-center">
+                      <FaHeart className="text-2xl text-indigo-950 " />
+                    </button> 
+                  </div>
+                  <div className="flex justify-between items-end mt-4">
+                    <h3 className="text-lg text-indigo-950 font-semibold">{kids.productName}</h3>
+                    <p className="text-lg text-indigo-950 font-semibold">Left in Stock: {kids.quantity}</p>
+                  </div>
+                  <p className="text-lg text-indigo-950 font-semibold">Features: {kids.features.join(',')}</p>
+                <p className="text-lg text-indigo-950 font-semibold">Color: {kids.colors.join(',')}</p> 
+                <p className="text-lg text-indigo-950 font-semibold">Email: {kids.email}</p>
+                <p className="text-lg text-indigo-950 font-semibold">ShopID: {kids.shopId}</p>
+                <p className="text-lg text-indigo-950 font-semibold">Category: {kids.category} = {kids.subcategory}</p>
+                <p className="text-lg text-indigo-950 font-semibold">On Sale: {kids.onSale}</p>
+                <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {kids.priceOnSale}</p>
+                <p className="text-lg text-indigo-950 font-semibold">Size: {kids.size.join(',')}</p> 
                 </div>
               );
             })}
