@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Cat4 = () => {
+  const { isLoggedIn } = useSelector((state) => state.auth);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -71,6 +74,17 @@ const Cat4 = () => {
       />
     );
   };
+
+
+  if (!isLoggedIn) {
+    return (
+      <div className="text-red-700 p-8 bg-gray-100 min-h-screen flex items-center justify-center">
+        <Link to="/login" className="py-2 px-4 rounded bg-red-500 text-white transition duration-300 hover:bg-red-600">
+          You are not logged in! Please login to buy or view these products...Click Here!
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">

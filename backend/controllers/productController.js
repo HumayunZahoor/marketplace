@@ -218,9 +218,9 @@ export const updateProductsOnSale = async (req, res) => {
 
     const originalPrice = currentProduct.price;
 
-    // Check if the product is on sale
+    
     if (onSale) {
-      // Product is on sale
+      
       if (priceOnSale !== undefined && priceOnSale !== null) {
         const discountPercentage = parseFloat(priceOnSale);
 
@@ -241,7 +241,7 @@ export const updateProductsOnSale = async (req, res) => {
         return res.status(400).json({ message: 'priceOnSale is required to calculate the discount' });
       }
     } else {
-      // Product is not on sale
+      
       const updatedProduct = await Product.findByIdAndUpdate(
         productId,
         { price: originalPrice, priceOnSale: null, onSale: false },

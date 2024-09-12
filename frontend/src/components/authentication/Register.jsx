@@ -15,7 +15,7 @@ const Register = () => {
         name,
         email,
         password,
-        role: 'Seller',
+        role: 'Visitor',
       });
       if (response.status === 201) {
         navigate('/login');

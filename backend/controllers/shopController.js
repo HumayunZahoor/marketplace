@@ -11,7 +11,6 @@ export const createShop = async (req, res) => {
     if (!shopName || !description || !userName || !userEmail) {
       return res.status(400).json({ message: 'All fields are required, including shopName and userEmail.' });
     }
-
    
     const newShop = new Shop({
       shopName,
@@ -19,11 +18,9 @@ export const createShop = async (req, res) => {
       userName,
       userEmail,
     });
-
     
     await newShop.save();
 
-    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -33,7 +30,7 @@ export const createShop = async (req, res) => {
             product_data: {
               name: `Shop Creation: ${shopName}`,
             },
-            unit_amount: 60000, 
+            unit_amount: 600, 
           },
           quantity: 1,
         },
@@ -59,7 +56,7 @@ export const createShop = async (req, res) => {
 };
 
 
-
+//-------------------------------------------------------
 
 export const getShops = async (req, res) => {
   try {

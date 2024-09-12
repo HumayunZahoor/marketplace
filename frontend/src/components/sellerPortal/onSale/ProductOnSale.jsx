@@ -7,7 +7,7 @@ const ProductOnSale = () => {
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState({});
 
-  // Fetch products by shop ID
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -23,7 +23,7 @@ const ProductOnSale = () => {
     }
   }, [shopId]);
 
-  // Handle input changes for each product
+  
   const handleInputChange = (e, productId) => {
     const { name, value, type, checked } = e.target;
     setFormData((prevData) => {
@@ -35,22 +35,22 @@ const ProductOnSale = () => {
         },
       };
 
-      // Reset priceOnSale if onSale is unchecked
+    
       if (name === 'onSale' && !checked) {
-        updatedData[productId].priceOnSale = ''; // Clear priceOnSale when not on sale
+        updatedData[productId].priceOnSale = ''; 
       }
 
       return updatedData;
     });
   };
 
-  // Handle product update
+ 
   const handleUpdateProduct = async (productId) => {
     const productData = formData[productId] || {};
     try {
       await axios.put(
         `http://localhost:5001/api/products/products-on-sale/${productId}`,
-        productData, // send as JSON
+        productData,
         {
           headers: {
             'Content-Type': 'application/json',

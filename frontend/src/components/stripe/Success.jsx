@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaCheckCircle } from 'react-icons/fa'; // Importing an icon
+import { FaCheckCircle } from 'react-icons/fa'; 
 
 const Success = () => {
   return (
@@ -8,7 +8,7 @@ const Success = () => {
         <FaCheckCircle className="text-green-500 text-6xl mb-4" />
         <h1 className="text-3xl font-bold mb-2">Congratulations!</h1>
         <p className="text-lg mb-4">Your shop has been successfully created in <strong>تجارت گھر</strong>.</p>
-        <p className="text-md">You have paid <strong>$XX</strong> to create your shop. You can now add your products and start selling!</p>
+        <p className="text-md">You have paid <strong>$6</strong> to create your shop. You can now add your products and start selling!</p>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaTimesCircle } from 'react-icons/fa'; // Importing an icon
+import { FaTimesCircle } from 'react-icons/fa'; 
 
 const Cancel = () => {
   return (

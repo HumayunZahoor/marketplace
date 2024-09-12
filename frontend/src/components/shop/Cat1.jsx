@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { FaShoppingCart, FaHeart } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom'; 
 
 const Cat1 = () => {
+  const { isLoggedIn , user } = useSelector((state) => state.auth);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,10 +24,10 @@ const Cat1 = () => {
       try {
         const response = await axios.get('http://localhost:5001/api/products/product-by-category');
         setProducts(response.data);
-        setLoading(false);
       } catch (err) {
         console.error('Error fetching products:', err);
         setError('Failed to fetch products');
+      } finally {
         setLoading(false);
       }
     };
@@ -67,8 +70,6 @@ const Cat1 = () => {
     const totalProducts = electronicsProducts.filter((product) => product.subcategory === subcategory).length;
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
-    
-
     return (
       <ReactPaginate
         pageCount={totalPages}
@@ -89,8 +90,19 @@ const Cat1 = () => {
     );
   };
 
+  if (!isLoggedIn) {
+    return (
+      <div className="text-red-700 p-8 bg-gray-100 min-h-screen flex items-center justify-center">
+        <Link to="/login" className="py-2 px-4 rounded bg-red-500 text-white transition duration-300 hover:bg-red-600">
+          You are not logged in! Please login to buy or view these products...Click Here!
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
+    <p className="text-2xl font-bold mb-6">email ({user.email}) and name ({user.name}) of logged in user</p>
       <h1 className="text-2xl font-bold mb-6">Electronics</h1>
 
       {paginateProducts('Phones', pagePhones).length > 0 && (
@@ -110,9 +122,6 @@ const Cat1 = () => {
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
-                   {/* <div className="absolute top-0 right-0 p-1 mt-1 bg-red-700  text-white rounded-s-3xl font-serif font-bold">
-                      ${phone.price}
-                    </div> */}
                     {phone.onSale === 'true' ? (
                       <>
                         <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
@@ -127,21 +136,35 @@ const Cat1 = () => {
                         ${phone.price}
                       </div>
                     )}
-                    
                   </div>
-                  <div className="flex justify-end items-end space-x-2 mt-3">
-                    <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl  hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
-                      <FaShoppingCart className="text-3xl" />
-                    </button>      
-                    <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
-                            onClick={() => handleIconClick(phone._id)}>
-                      <FaHeart className={`text-3xl ${likedItems.has(phone._id) ? 'text-red-700' : 'text-red-400'}`} />
-                    </button>  
+                  <div className="flex justify-between items-end space-x-2 mt-3">
+                    <h3 className="text-2xl text-indigo-950 font-semibold">{phone.productName}</h3>
+                    <div className="flex space-x-2 items-center">
+                      <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
+                        <FaShoppingCart className="text-2xl" />
+                      </button>      
+                      <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
+                        onClick={() => handleIconClick(phone._id)}>
+                        <FaHeart className={`text-2xl ${likedItems.has(phone._id) ? 'text-red-700' : 'text-red-400'}`} />
+                      </button>  
+                    </div>
                   </div>
-                  <div className="flex justify-between items-end mt-4">
-                    <h3 className="text-lg text-indigo-950 font-semibold">{phone.productName}</h3>
-                    <p className="text-lg text-indigo-950 font-semibold">Left in Stock: {phone.quantity}</p>
-                  </div>
+                  {phone.quantity >= 20 ? (
+                    <div className="flex justify-center items-end mt-4">
+                      <p className="text-lg text-indigo-950 font-semibold">Stock Available: {phone.quantity}</p>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-end mt-4">
+                      <p className="text-lg text-indigo-950 font-semibold">Hurry up! Only <span className="text-red-700">{phone.quantity}</span> Remaining</p>
+                    </div>
+                  )}
+                  <p className="text-lg text-indigo-950 font-semibold">Features: {phone.features.join(', ')}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Color: {phone.colors.join(', ')}</p> 
+                  <p className="text-lg text-indigo-950 font-semibold">Shop Owner's Email: {phone.email}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Shop ID: {phone.shopId}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Category: {phone.category} = {phone.subcategory}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">On Sale: {phone.onSale}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {phone.priceOnSale}</p>
                 </div>
               );
             })}
@@ -159,11 +182,11 @@ const Cat1 = () => {
               return (
                 <div key={laptop._id} className="bg-white p-4 rounded-lg shadow-md relative">
                   <div className="relative">
-                    <img
-                      src={imageUrl}
-                      alt={laptop.productName}
+                    <img 
+                      src={imageUrl} 
+                      alt={laptop.productName} 
                       className="h-48 w-full object-fit rounded-md"
-                      onError={() => {
+                      onError={() => { 
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
@@ -182,19 +205,34 @@ const Cat1 = () => {
                       </div>
                     )}
                   </div>
-                  <div className="flex justify-end items-end space-x-2 mt-3">
-                    <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
-                      <FaShoppingCart className="text-3xl" />
-                    </button>      
-                    <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
-                            onClick={() => handleIconClick(phone._id)}>
-                      <FaHeart className={`text-3xl ${likedItems.has(laptop._id) ? 'text-red-700' : 'text-red-400'}`} />
-                    </button>  
+                  <div className="flex justify-between items-end space-x-2 mt-3">
+                    <h3 className="text-2xl text-indigo-950 font-semibold">{laptop.productName}</h3>
+                    <div className="flex space-x-2 items-center">
+                      <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
+                        <FaShoppingCart className="text-2xl" />
+                      </button>      
+                      <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
+                        onClick={() => handleIconClick(laptop._id)}>
+                        <FaHeart className={`text-2xl ${likedItems.has(laptop._id) ? 'text-red-700' : 'text-red-400'}`} />
+                      </button>  
+                    </div>
                   </div>
-                  <div className="flex justify-between items-end mt-4">
-                    <h3 className="text-lg text-indigo-950 font-semibold">{laptop.productName}</h3>
-                    <p className="text-lg text-indigo-950 font-semibold">Left in Stock: {laptop.quantity}</p>
-                  </div>
+                  {laptop.quantity >= 20 ? (
+                    <div className="flex justify-center items-end mt-4">
+                      <p className="text-lg text-indigo-950 font-semibold">Stock Available: {laptop.quantity}</p>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-end mt-4">
+                      <p className="text-lg text-indigo-950 font-semibold">Hurry up! Only <span className="text-red-700">{laptop.quantity}</span> Remaining</p>
+                    </div>
+                  )}
+                  <p className="text-lg text-indigo-950 font-semibold">Features: {laptop.features.join(', ')}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Color: {laptop.colors.join(', ')}</p> 
+                  <p className="text-lg text-indigo-950 font-semibold">Shop Owner's Email: {laptop.email}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Shop ID: {laptop.shopId}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Category: {laptop.category} = {laptop.subcategory}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">On Sale: {laptop.onSale}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {laptop.priceOnSale}</p>
                 </div>
               );
             })}
@@ -212,15 +250,15 @@ const Cat1 = () => {
               return (
                 <div key={camera._id} className="bg-white p-4 rounded-lg shadow-md relative">
                   <div className="relative">
-                    <img
-                      src={imageUrl}
-                      alt={camera.productName}
+                    <img 
+                      src={imageUrl} 
+                      alt={camera.productName} 
                       className="h-48 w-full object-fit rounded-md"
-                      onError={() => {
+                      onError={() => { 
                         console.error('Image failed to load:', imageUrl);
                       }}
                     />
-                     {camera.onSale === 'true' ? (
+                    {camera.onSale === 'true' ? (
                       <>
                         <div className="absolute top-0 left-0 p-1 mt-1 bg-green-800 text-white rounded-e-3xl font-serif font-bold">
                           -{camera.priceOnSale}%
@@ -235,19 +273,34 @@ const Cat1 = () => {
                       </div>
                     )}
                   </div>
-                  <div className="flex justify-end items-end space-x-2 mt-3">
-                    <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl  hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
-                      <FaShoppingCart className="text-3xl" />
-                    </button>      
-                    <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
-                            onClick={() => handleIconClick(phone._id)}>
-                      <FaHeart className={`text-3xl ${likedItems.has(camera._id) ? 'text-red-700' : 'text-red-400'}`} />
-                    </button>  
+                  <div className="flex justify-between items-end space-x-2 mt-3">
+                    <h3 className="text-2xl text-indigo-950 font-semibold">{camera.productName}</h3>
+                    <div className="flex space-x-2 items-center">
+                      <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
+                        <FaShoppingCart className="text-2xl" />
+                      </button>      
+                      <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
+                        onClick={() => handleIconClick(camera._id)}>
+                        <FaHeart className={`text-2xl ${likedItems.has(camera._id) ? 'text-red-700' : 'text-red-400'}`} />
+                      </button>  
+                    </div>
                   </div>
-                  <div className="flex justify-between items-end mt-4">
-                    <h3 className="text-lg text-indigo-950 font-semibold">{camera.productName}</h3>
-                    <p className="text-lg text-indigo-950 font-semibold">Left in Stock: {camera.quantity}</p>
-                  </div>
+                  {camera.quantity >= 20 ? (
+                    <div className="flex justify-center items-end mt-4">
+                      <p className="text-lg text-indigo-950 font-semibold">Stock Available: {camera.quantity}</p>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-end mt-4">
+                      <p className="text-lg text-indigo-950 font-semibold">Hurry up! Only <span className="text-red-700">{camera.quantity}</span> Remaining</p>
+                    </div>
+                  )}
+                  <p className="text-lg text-indigo-950 font-semibold">Features: {camera.features.join(', ')}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Color: {camera.colors.join(', ')}</p> 
+                  <p className="text-lg text-indigo-950 font-semibold">Shop Owner's Email: {camera.email}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Shop ID: {camera.shopId}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Category: {camera.category} = {camera.subcategory}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">On Sale: {camera.onSale}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {camera.priceOnSale}</p>
                 </div>
               );
             })}

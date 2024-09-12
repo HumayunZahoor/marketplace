@@ -38,7 +38,7 @@ const Login = () => {
           } else if (role === "Seller") {
             navigate('/SellerPortal')
           } else {
-            navigate('/')
+            navigate('/Shop')
           }
       
         } else {

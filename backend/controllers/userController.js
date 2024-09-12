@@ -22,6 +22,8 @@ export const registerUser = async (req, res) => {
   }
 };
 
+//-----------------------------------------------------------
+
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -49,6 +51,7 @@ export const loginUser = async (req, res) => {
   }
 };
 
+//----------------------------------------------------
 
 export const changePassword = async (req, res) => {
   try {
@@ -89,5 +92,40 @@ export const changePassword = async (req, res) => {
     res.status(200).json({ message: 'Password updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+//----------------------------------------------------
+
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, 'name email role');  
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching users' });
+  }
+};
+
+//----------------------------------------------
+
+
+export const updateUserRole = async (req, res) => {
+  try {
+    const { userId, newRole } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId, 
+      { role: newRole }, 
+      { new: true }  
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Role updated successfully', user: updatedUser });
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating role' });
   }
 };

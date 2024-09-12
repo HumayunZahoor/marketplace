@@ -26,6 +26,8 @@ import Cancel from "./components/stripe/Cancel.jsx";
 import AddProducts from "./components/sellerPortal/addproducts/AddProducts.jsx";
 import UpdateProducts from "./components/sellerPortal/updateProducts/UpdateProducts.jsx";
 import ProductOnSale from "./components/sellerPortal/onSale/ProductOnSale.jsx";
+import UpdateRole from "./components/adminPortal/updateRole/UpdateRole.jsx";
+import UsersRequest from "./components/adminPortal/userRequests/UsersRequest.jsx";
 import './index.css';
 
 function App() {
@@ -60,6 +62,8 @@ function App() {
       <Route path="/AddProducts" element={<AddProducts/>} />
       <Route path="/UpdateProducts" element={<UpdateProducts/>} />
       <Route path="/ProductOnSale" element={<ProductOnSale/>} />
+      <Route path="/UpdateRole" element={<UpdateRole/>} />
+      <Route path="/UsersRequest" element={<UsersRequest/>} />
       </Routes>
     </Router>
   );

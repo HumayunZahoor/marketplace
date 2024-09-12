@@ -15,6 +15,7 @@ const UserInfoSection = () => {
             <span className="text-blue-500 font-bold">{user.role}</span>.
           </p>
         </div>
+        
       ) : (
         <div className="text-red-700">
           <Link to="/login" className="py-2 px-4 rounded transition duration-300 flex items-center">

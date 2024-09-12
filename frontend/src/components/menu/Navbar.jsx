@@ -39,14 +39,14 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        
         <div className="block lg:hidden">
           <button onClick={() => setMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
             {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
 
-        {/* Center - Search bar */}
+        
         <div className="hidden lg:flex flex-grow mx-4 justify-center">
           <form onSubmit={handleSearch} className="flex">
             <input
@@ -63,7 +63,7 @@ const Navbar = () => {
           </form>
         </div>
 
-        {/* Right side - Links and Cart Icon */}
+        
         <div className="hidden lg:flex items-center space-x-4 text-transparent bg-clip-text bg-gradient-to-r from-gray-400 via-gray-700 to-gray-400">
           <ul className="flex space-x-4 items-center">
             <li>
@@ -72,14 +72,6 @@ const Navbar = () => {
                 className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
               >
                 Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/Shop"
-                className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
-              >
-                Shop Stop
               </Link>
             </li>
             <li>
@@ -93,22 +85,44 @@ const Navbar = () => {
             {isLoggedIn && (
               <>
                 {user.role === 'SuperAdmin' && (
-                  <li>
+                  <li className="flex space-x-4">
                     <Link
                       to="/AdminPortal"
                       className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
                     >
                       Admin Portal
                     </Link>
+                    <Link
+                      to="/Shop"
+                      className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                    >
+                      Shop Stop
+                    </Link>
                   </li>
                 )}
                 {user.role === 'Seller' && (
-                  <li>
+                  <li className="flex space-x-4">
                     <Link
                       to="/SellerPortal"
                       className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
                     >
                       Seller Portal
+                    </Link>
+                    <Link
+                      to="/Shop"
+                      className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                    >
+                      Shop Stop
+                    </Link>
+                  </li>
+                )}
+                {user.role === 'Visitor' && (
+                  <li className="flex space-x-4"> 
+                    <Link
+                      to="/Shop"
+                      className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                    >
+                      Shop Stop
                     </Link>
                   </li>
                 )}

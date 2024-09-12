@@ -11,8 +11,8 @@ const AdvertisementSection = () => {
           <p className="m-10 text-lg lg:text-xl">
             Join our marketplace and create your own shop today. Reach new customers and grow your business with ease.
           </p>
-          <Link to="/login" className="bg-indigo-400 hover:bg-indigo-700 text-gradient-to-r from-gray-400 via-gray-700 to-gray-400 font-bold py-3 px-6 pb-2 rounded-full transition duration-300">
-            Login to Get Started
+          <Link to="/Contact" className="bg-indigo-400 hover:bg-indigo-700 text-gradient-to-r from-gray-400 via-gray-700 to-gray-400 font-bold py-3 px-6 pb-2 rounded-full transition duration-300">
+            Let's Get Started
           </Link>
         </div>
       </div>
