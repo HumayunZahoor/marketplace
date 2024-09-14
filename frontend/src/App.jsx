@@ -28,6 +28,8 @@ import UpdateProducts from "./components/sellerPortal/updateProducts/UpdateProdu
 import ProductOnSale from "./components/sellerPortal/onSale/ProductOnSale.jsx";
 import UpdateRole from "./components/adminPortal/updateRole/UpdateRole.jsx";
 import UsersRequest from "./components/adminPortal/userRequests/UsersRequest.jsx";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 
 function App() {
@@ -65,6 +67,18 @@ function App() {
       <Route path="/UpdateRole" element={<UpdateRole/>} />
       <Route path="/UsersRequest" element={<UsersRequest/>} />
       </Routes>
+      <ToastContainer 
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </Router>
   );
 }

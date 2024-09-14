@@ -11,6 +11,7 @@ import userRoutes from './routes/userRoutes.js';
 import shopRoutes from './routes/shopRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
+import wishlistRoutes from './routes/wishlistRoutes.js';
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use('/api/shops', shopRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/products/', productRoutes);
 app.use('/api/contacts/', contactRoutes);
+app.use('/api/wishlist/', wishlistRoutes);
 
 app.post('/logout', (req, res) => {
   res.clearCookie('token').sendStatus(200);

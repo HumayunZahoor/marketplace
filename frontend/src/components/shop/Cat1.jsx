@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-import { FaShoppingCart, FaHeart } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart , FaRegHeart  } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'; 
 
@@ -15,7 +15,7 @@ const Cat1 = () => {
   const [pageLaptops, setPageLaptops] = useState(0);
   const [pageCameras, setPageCameras] = useState(0);
 
-  const [likedItems, setLikedItems] = useState(new Set());
+  const [wishlists, setWishlists] = useState([]);
 
   const itemsPerPage = 4;
 
@@ -34,6 +34,21 @@ const Cat1 = () => {
 
     fetchProducts();
   }, []);
+
+   // Fetch wishlist for the logged-in user
+   useEffect(() => {
+    const fetchWishLists = async () => {
+      if (!isLoggedIn || !user?.email) return;
+      try {
+        const response = await axios.get(`http://localhost:5001/api/wishlist/get-wishlist/${user.email}`);
+        setWishlists(response.data);
+      } catch (error) {
+        console.error('Error fetching wishlists:', error);
+      }
+    };
+
+    fetchWishLists();
+  }, [isLoggedIn, user?.email]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -54,16 +69,37 @@ const Cat1 = () => {
     if (subcategory === 'Cameras') setPageCameras(newPage);
   };
 
-  const handleIconClick = (productId) => {
-    setLikedItems((prevLikedItems) => {
-      const newLikedItems = new Set(prevLikedItems);
-      if (newLikedItems.has(productId)) {
-        newLikedItems.delete(productId);
-      } else {
-        newLikedItems.add(productId);
-      }
-      return newLikedItems;
-    });
+  const handleIconClick = async (productId) => {
+    try {
+      const response = await axios.post('http://localhost:5001/api/wishlist/added-to-wishlist', {
+        userEmail: user.email,
+        productId
+      });
+
+      const newStatus = JSON.parse(response.data.status);
+
+      // Optimistically update the wishlist state to reflect the new status
+      setWishlists((prevWishlists) => {
+        const updatedWishlist = prevWishlists.map((item) =>
+          item.productId === productId ? { ...item, status: newStatus } : item
+        );
+
+        // If the product is not already in the wishlist, add it
+        if (!updatedWishlist.find((item) => item.productId === productId)) {
+          updatedWishlist.push({ productId, status: newStatus });
+        }
+
+        return updatedWishlist;
+      });
+    } catch (err) {
+      console.error('Error updating wishlist:', err);
+    }
+  };
+  
+  // Check if product is in the user's wishlist and return its status
+  const isProductInWishlist = (productId) => {
+    const wishlistItem = wishlists.find((item) => item.productId === productId);
+    return wishlistItem ? wishlistItem.status : false;
   };
 
   const renderPagination = (subcategory, currentPage) => {
@@ -111,6 +147,7 @@ const Cat1 = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {paginateProducts('Phones', pagePhones).map((phone) => {
               const imageUrl = `http://localhost:5001/uploads/${phone.image}`;
+              const inWishlist = isProductInWishlist(phone._id);
               return (
                 <div key={phone._id} className="bg-white p-4 rounded-lg shadow-md relative">
                   <div className="relative">
@@ -140,13 +177,16 @@ const Cat1 = () => {
                   <div className="flex justify-between items-end space-x-2 mt-3">
                     <h3 className="text-2xl text-indigo-950 font-semibold">{phone.productName}</h3>
                     <div className="flex space-x-2 items-center">
-                      <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
+                      <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:text-indigo-900 transition-colors duration-300 flex items-center justify-center">
                         <FaShoppingCart className="text-2xl" />
                       </button>      
-                      <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
-                        onClick={() => handleIconClick(phone._id)}>
-                        <FaHeart className={`text-2xl ${likedItems.has(phone._id) ? 'text-red-700' : 'text-red-400'}`} />
-                      </button>  
+                      <button
+                        onClick={() => handleIconClick(phone._id)}
+                        className={`text-2xl ${inWishlist ? 'text-red-700' : 'text-gray-400'}`}
+                      >
+                        <FaHeart />
+                      </button>
+                     
                     </div>
                   </div>
                   {phone.quantity >= 20 ? (
@@ -165,6 +205,7 @@ const Cat1 = () => {
                   <p className="text-lg text-indigo-950 font-semibold">Category: {phone.category} = {phone.subcategory}</p>
                   <p className="text-lg text-indigo-950 font-semibold">On Sale: {phone.onSale}</p>
                   <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {phone.priceOnSale}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Product Id: {phone._id}</p>
                 </div>
               );
             })}
@@ -179,6 +220,7 @@ const Cat1 = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {paginateProducts('Laptops', pageLaptops).map((laptop) => {
               const imageUrl = `http://localhost:5001/uploads/${laptop.image}`;
+              const inWishlist = isProductInWishlist(laptop._id);
               return (
                 <div key={laptop._id} className="bg-white p-4 rounded-lg shadow-md relative">
                   <div className="relative">
@@ -211,10 +253,12 @@ const Cat1 = () => {
                       <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
                         <FaShoppingCart className="text-2xl" />
                       </button>      
-                      <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
-                        onClick={() => handleIconClick(laptop._id)}>
-                        <FaHeart className={`text-2xl ${likedItems.has(laptop._id) ? 'text-red-700' : 'text-red-400'}`} />
-                      </button>  
+                      <button
+                        onClick={() => handleIconClick(laptop._id)}
+                        className={`text-2xl ${inWishlist ? 'text-red-700' : 'text-gray-400'}`}
+                      >
+                        <FaHeart />
+                      </button>
                     </div>
                   </div>
                   {laptop.quantity >= 20 ? (
@@ -233,6 +277,7 @@ const Cat1 = () => {
                   <p className="text-lg text-indigo-950 font-semibold">Category: {laptop.category} = {laptop.subcategory}</p>
                   <p className="text-lg text-indigo-950 font-semibold">On Sale: {laptop.onSale}</p>
                   <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {laptop.priceOnSale}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Product Id: {laptop._id}</p>
                 </div>
               );
             })}
@@ -247,6 +292,7 @@ const Cat1 = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {paginateProducts('Cameras', pageCameras).map((camera) => {
               const imageUrl = `http://localhost:5001/uploads/${camera.image}`;
+              const inWishlist = isProductInWishlist(camera._id);
               return (
                 <div key={camera._id} className="bg-white p-4 rounded-lg shadow-md relative">
                   <div className="relative">
@@ -279,10 +325,12 @@ const Cat1 = () => {
                       <button className="p-2 w-auto h-auto text-indigo-950 rounded-3xl hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center">
                         <FaShoppingCart className="text-2xl" />
                       </button>      
-                      <button className="p-2 w-auto h-auto rounded-3xl transition-colors duration-300 flex items-center justify-center"
-                        onClick={() => handleIconClick(camera._id)}>
-                        <FaHeart className={`text-2xl ${likedItems.has(camera._id) ? 'text-red-700' : 'text-red-400'}`} />
-                      </button>  
+                      <button
+                        onClick={() => handleIconClick(camera._id)}
+                        className={`text-2xl ${inWishlist ? 'text-red-700' : 'text-gray-400'}`}
+                      >
+                        <FaHeart />
+                      </button>
                     </div>
                   </div>
                   {camera.quantity >= 20 ? (
@@ -301,6 +349,7 @@ const Cat1 = () => {
                   <p className="text-lg text-indigo-950 font-semibold">Category: {camera.category} = {camera.subcategory}</p>
                   <p className="text-lg text-indigo-950 font-semibold">On Sale: {camera.onSale}</p>
                   <p className="text-lg text-indigo-950 font-semibold">-% On Sale: {camera.priceOnSale}</p>
+                  <p className="text-lg text-indigo-950 font-semibold">Product Id: {camera._id}</p>
                 </div>
               );
             })}

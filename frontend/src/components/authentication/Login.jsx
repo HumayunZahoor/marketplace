@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate , Link} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/authSlice';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -31,7 +34,7 @@ const Login = () => {
           console.log('Role:', role);
   
           dispatch(login({ email , name , role }));
-          alert(`Welcome: ${name}`); 
+          toast.success(`Welcome: ${name}`); 
 
           if(role === "SuperAdmin") {
             navigate('/AdminPortal');

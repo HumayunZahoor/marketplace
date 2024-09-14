@@ -9,10 +9,10 @@ const AdminPortal = () => {
       <h1>{user.name} Wellcome to Admin Portal</h1>
       
       <div className="text-red-700">
-            <Link to="/UpdateRole" className="py-2 px-4 rounded transition duration-300 flex items-center">
+            <Link to="/UpdateRole" className=" w-auto h-auto py-2 px-4 rounded transition duration-300 flex items-center">
               Update Role of USer Who Want To Create Shop
             </Link>
-            <Link to="/UsersRequest" className="py-2 px-4 rounded transition duration-300 flex items-center">
+            <Link to="/UsersRequest" className=" w-auto h-auto py-2 px-4  rounded transition duration-300 flex items-center">
               Users Requests To Allow them to Create shops
             </Link>
           </div>
