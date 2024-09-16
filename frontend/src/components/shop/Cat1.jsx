@@ -35,7 +35,6 @@ const Cat1 = () => {
     fetchProducts();
   }, []);
 
-   // Fetch wishlist for the logged-in user
    useEffect(() => {
     const fetchWishLists = async () => {
       if (!isLoggedIn || !user?.email) return;
@@ -78,13 +77,11 @@ const Cat1 = () => {
 
       const newStatus = JSON.parse(response.data.status);
 
-      // Optimistically update the wishlist state to reflect the new status
       setWishlists((prevWishlists) => {
         const updatedWishlist = prevWishlists.map((item) =>
           item.productId === productId ? { ...item, status: newStatus } : item
         );
 
-        // If the product is not already in the wishlist, add it
         if (!updatedWishlist.find((item) => item.productId === productId)) {
           updatedWishlist.push({ productId, status: newStatus });
         }
@@ -95,8 +92,7 @@ const Cat1 = () => {
       console.error('Error updating wishlist:', err);
     }
   };
-  
-  // Check if product is in the user's wishlist and return its status
+
   const isProductInWishlist = (productId) => {
     const wishlistItem = wishlists.find((item) => item.productId === productId);
     return wishlistItem ? wishlistItem.status : false;

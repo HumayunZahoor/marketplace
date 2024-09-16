@@ -51,9 +51,9 @@ mongoose.connect('mongodb://localhost:27017/MarketPlace')
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/users', userRoutes);
 app.use('/api/shops', shopRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/products/', productRoutes);
 app.use('/api/contacts/', contactRoutes);
 app.use('/api/wishlist/', wishlistRoutes);

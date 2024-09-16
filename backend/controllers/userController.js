@@ -3,9 +3,15 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 
+
+
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    const image = req.file ? req.file.filename : null;
+    if (!image) {
+      return res.status(400).json({ message: 'Image is required' });
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -13,7 +19,15 @@ export const registerUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword, role });
+    
+    
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      image, 
+    });
 
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully' });
@@ -21,6 +35,7 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 //-----------------------------------------------------------
 
@@ -129,3 +144,19 @@ export const updateUserRole = async (req, res) => {
     res.status(500).json({ message: 'Error updating role' });
   }
 };
+
+//----------------------------------------
+
+export const userByEmail = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.userEmail });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

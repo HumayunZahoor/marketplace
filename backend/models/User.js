@@ -12,12 +12,16 @@ const userSchema = new mongoose.Schema({
   },
   role: { 
     type: String, 
-    enum: ['SuperAdmin', 'Seller' , 'Visitor'], 
+    enum: ['SuperAdmin', 'Seller', 'Visitor'], 
     default: 'Visitor' 
   },
   password: { 
     type: String, 
     required: true 
+  },
+  image: {
+    type: String, 
+    required: false
   },
   createdAt: {
     type: Date,

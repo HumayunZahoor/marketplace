@@ -6,16 +6,31 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [image, setImage] = useState(null);
   const navigate = useNavigate();
+
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    if (file && validImageTypes.includes(file.type)) {
+      setImage(file);
+    } else {
+      alert('Please upload a valid image file (JPEG, PNG, GIF).');
+    }
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('name' , name)
+    formData.append('email' , email)
+    formData.append('password' , password)
+    formData.append('image', image);
     try {
-      const response = await axios.post('http://localhost:5001/api/users/register', {
-        name,
-        email,
-        password,
-        role: 'Visitor',
+       const response = await axios.post('http://localhost:5001/api/users/register', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
       if (response.status === 201) {
         navigate('/login');
@@ -60,6 +75,15 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
               required
+            />
+          </div>
+          <div>
+            <label className="block font-semibold mb-1">Product Image:</label>
+            <input
+              type="file"
+              onChange={handleImageChange}
+              required
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
             />
           </div>
           <button
