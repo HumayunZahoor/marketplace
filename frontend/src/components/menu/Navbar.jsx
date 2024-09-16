@@ -124,7 +124,7 @@ const Navbar = () => {
                     >
                       Shop Stop
                     </Link>
-                  </li>
+                  </li> 
                 )}
                 <li>
                   <button
@@ -136,6 +136,7 @@ const Navbar = () => {
                 </li>
               </>
             )}
+              {isLoggedIn && (
             <li>
               <Link
                 to="/Cart"
@@ -144,6 +145,7 @@ const Navbar = () => {
                 <FaShoppingCart />
               </Link>
             </li>
+              )}
           </ul>
         </div>
       </div>

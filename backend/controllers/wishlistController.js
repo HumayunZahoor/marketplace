@@ -29,7 +29,7 @@ export const toggleWishlist = async (req, res) => {
 export const getUserWishlist = async (req, res) => {
   try {
     const wishlists = await Wishlist.find({ userEmail: req.params.userEmail });
-    res.json(wishlists); // Send the fetched data in the response
+    res.json(wishlists);
   } catch (error) {
     console.error('Error fetching wishlists:', error);
     res.status(500).json({ message: 'Server error' });

@@ -26,7 +26,7 @@ const AddProducts = () => {
     'Toys & Games': ['Outdoor', 'Educational', 'Video Games'],
     'Books & Media': ['Books', 'Movies', 'Music'],
     'Services': ['Cleaning', 'Repair', 'Consulting'],
-    'Food & Beverages': ['Snacks', 'Beverages', 'Groceries'],
+    'Food & Drinks': ['Snacks', 'Drinks', 'Groceries'],
   };
 
   const sizeCategories = ['Fashion', 'Home & Garden', 'Beauty & Health', 'Automotive', 'Sports & Outdoors', 'Toys & Games'];

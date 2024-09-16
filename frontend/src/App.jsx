@@ -28,6 +28,7 @@ import UpdateProducts from "./components/sellerPortal/updateProducts/UpdateProdu
 import ProductOnSale from "./components/sellerPortal/onSale/ProductOnSale.jsx";
 import UpdateRole from "./components/adminPortal/updateRole/UpdateRole.jsx";
 import UsersRequest from "./components/adminPortal/userRequests/UsersRequest.jsx";
+import Cart from "./components/sellerPortal/addToCart/Cart.jsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
@@ -66,6 +67,7 @@ function App() {
       <Route path="/ProductOnSale" element={<ProductOnSale/>} />
       <Route path="/UpdateRole" element={<UpdateRole/>} />
       <Route path="/UsersRequest" element={<UsersRequest/>} />
+      <Route path="/Cart" element={<Cart/>} />
       </Routes>
       <ToastContainer 
         position="top-right"
