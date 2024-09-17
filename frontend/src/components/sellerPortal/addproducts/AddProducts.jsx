@@ -105,16 +105,16 @@ const AddProducts = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">Add a New Product</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md text-indigo-950">
+      <h2 className="text-2xl font-semibold mb-6 text-center m-16">Add a New Product</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 text-indigo-950">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Category:</label>
+          <label className="block font-semibold mb-1">Category:</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
           >
             <option value="">Select a Category</option>
             {Object.keys(categories).map((cat) => (
@@ -126,12 +126,12 @@ const AddProducts = () => {
         </div>
         {subcategories.length > 0 && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Subcategory:</label>
+            <label className="block font-semibold mb-1">Subcategory:</label>
             <select
               value={subcategory}
               onChange={(e) => setSubcategory(e.target.value)}
               required
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
             >
               <option value="">Select a Subcategory</option>
               {subcategories.map((sub) => (
@@ -143,79 +143,79 @@ const AddProducts = () => {
           </div>
         )}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Product Name:</label>
+          <label className="block font-semibold mb-1">Product Name:</label>
           <input
             type="text"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Price:</label>
+          <label className="block font-semibold mb-1">Price:</label>
           <input
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Quantity:</label>
+          <label className="block font-semibold mb-1">Quantity:</label>
           <input
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Colors (comma separated):</label>
+          <label className="block font-semibold mb-1">Colors (comma separated):</label>
           <input
             type="text"
             value={colors.join(',')}
             onChange={handleColorChange}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
           />
         </div>
         {sizeCategories.includes(category) && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Size (comma separated):</label>
+            <label className="block font-semibold mb-1">Size (comma separated):</label>
             <input
               type="text"
               value={size.join(',')}
               onChange={handleSizeChange}
               required
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
             />
           </div>
         )}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Product Image:</label>
+          <label className="block font-semibold mb-1">Product Image:</label>
           <input
             type="file"
             onChange={handleImageChange}
             required
-            className="mt-1 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:font-medium file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Features/Size (comma separated):</label>
+          <label className="block font-semibold mb-1">Features/Size (comma separated):</label>
           <input
             type="text"
             value={features.join(',')}
             onChange={handleFeaturesChange}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
           />
         </div>
         <button
           type="submit"
-          className="mt-4 w-full py-2 px-4 bg-gray-500 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="w-full bg-indigo-950 text-white p-2 rounded-lg hover:bg-indigo-900 transition duration-300"
         >
           Add Product
         </button>

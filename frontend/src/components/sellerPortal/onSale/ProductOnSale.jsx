@@ -65,14 +65,9 @@ const ProductOnSale = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className=" p-8 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Products On Sale</h1>
-      <p className="mb-4 text-lg text-gray-700">
-        Email of logged-in user: <span className="font-semibold">{user.email}</span>
-      </p>
-      <p className="mb-8 text-lg text-gray-700">
-        ID of the shop: <span className="font-semibold">{shopId}</span>
-      </p>
+     
 
       <div className="space-y-6">
         {products.map((product) => (

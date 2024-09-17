@@ -26,27 +26,27 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-2xl font-bold mb-4 text-center">Change Password</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-indigo-950 text-center mb-6">Change Password</h2>
+        <form onSubmit={handleSubmit} className="space-y-4 text-indigo-950">
+          <div>
+            <label htmlFor="email" className="block font-semibold mb-1">Email Address</label>
             <input
               type="email"
               id="email"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="mb-6">
-            <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">New Password</label>
+          <div>
+            <label htmlFor="newPassword" className="block font-semibold mb-1">New Password</label>
             <input
               type="password"
               id="newPassword"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
@@ -54,7 +54,7 @@ const ChangePassword = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full bg-indigo-950 text-white p-2 rounded-lg hover:bg-indigo-900 transition duration-300"
           >
             Change Password
           </button>

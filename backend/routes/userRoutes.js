@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path'; 
-import { registerUser, loginUser, changePassword, getAllUsers, updateUserRole, userByEmail } from '../controllers/userController.js';
+import { registerUser, loginUser, changePassword, getAllUsers, updateUserRole, userByEmail , updateUserImage} from '../controllers/userController.js';
 
 
   
@@ -24,5 +24,7 @@ userRoutes.post('/change-password', changePassword);
 userRoutes.get('/all-users', getAllUsers);
 userRoutes.put('/update-role', updateUserRole);
 userRoutes.get('/user-by-email/:userEmail' , userByEmail)
+userRoutes.put('/update-image/:email', upload.single('image'), updateUserImage);
+
 
 export default userRoutes;

@@ -42,15 +42,15 @@ const CreateShopForm = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Create Shop</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="text-2xl font-bold text-indigo-950 text-center mb-6">Create Shop</h2>
+        <form onSubmit={handleSubmit} className="space-y-4 text-indigo-950">
           <div>
             <label className="block font-semibold mb-1">Shop Name</label>
             <input
               type="text"
               value={shopName}
               onChange={(e) => setShopName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
               required
             />
           </div>
@@ -59,13 +59,13 @@ const CreateShopForm = () => {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 transition duration-300"
+            className="w-full bg-indigo-950 text-white p-2 rounded-lg hover:bg-indigo-900 transition duration-300"
           >
             Create Shop
           </button>

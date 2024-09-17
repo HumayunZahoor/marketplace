@@ -92,26 +92,26 @@ const UpdateProducts = () => {
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">Manage Products</h1>
+      <h1 className="text-3xl font-bold mb-6 text-indigo-950">Manage Products</h1>
       <p className="mb-4 text-lg text-gray-700">
         Email of logged-in user: <span className="font-semibold">{user.email}</span>
       </p>
       <p className="mb-8 text-lg text-gray-700">
-        ID of the shop: <span className="font-semibold">{shopId}</span>
+        Shop ID: <span className="font-semibold">{shopId}</span>
       </p>
-
-      <div className="space-y-6">
+  
+      <div className="space-y-8">
         {products.map((product) => (
           <div key={product._id} className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4">{product.productName}</h3>
-           
+            <h3 className="text-2xl font-semibold mb-4 text-indigo-950">{product.productName}</h3>
+  
             <input
               type="text"
               name="category"
               placeholder="Category"
               defaultValue={product.category}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="text"
@@ -119,7 +119,7 @@ const UpdateProducts = () => {
               placeholder="Subcategory"
               defaultValue={product.subcategory}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-3 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="text"
@@ -127,7 +127,7 @@ const UpdateProducts = () => {
               placeholder="Product Name"
               defaultValue={product.productName}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-3 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="number"
@@ -135,7 +135,7 @@ const UpdateProducts = () => {
               placeholder="Price"
               defaultValue={product.price}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-3 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="number"
@@ -143,16 +143,15 @@ const UpdateProducts = () => {
               placeholder="Quantity"
               defaultValue={product.quantity}
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-3 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
-
             <input
               type="text"
               name="colors"
               placeholder="Colors (comma separated)"
               defaultValue={product.colors.join(',')}
               onChange={(e) => handleArrayInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-3 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="text"
@@ -160,7 +159,7 @@ const UpdateProducts = () => {
               placeholder="Features (comma separated)"
               defaultValue={product.features.join(',')}
               onChange={(e) => handleArrayInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-3 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="text"
@@ -168,37 +167,38 @@ const UpdateProducts = () => {
               placeholder="Size (comma separated)"
               defaultValue={product.size.join(',')}
               onChange={(e) => handleArrayInputChange(e, product._id)}
-              className="mt-1 block w-96  p-2 border border-gray-300 rounded-md shadow-sm"
+              className="mt-3 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
             />
             <input
               type="file"
               name="image"
               onChange={(e) => handleInputChange(e, product._id)}
-              className="mt-1 block w-96  text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
+              className="mt-3 block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:bg-gray-50 file:text-indigo-950 hover:file:bg-indigo-100"
             />
-            <div className=" flex justify-start ">
-            <button
-              type="button"
-              onClick={() => handleUpdateProduct(product._id)}
-              className="mt-4 h-12 w-30 py-2 px-4 bg-indigo-900 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
-            >
-              Update Product
-            </button>
-
-            
-            <button
-              type="button"
-              onClick={() => handleDeleteProduct(product._id)}
-              className="m-4 h-12 w-30 py-2 px-4 bg-indigo-900 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700"
-            >
-              Delete Product
-            </button>
+  
+            <div className="flex justify-start space-x-4 mt-6">
+              <button
+                type="button"
+                onClick={() => handleUpdateProduct(product._id)}
+                className="py-2 px-6 bg-indigo-950 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-900"
+              >
+                Update Product
+              </button>
+  
+              <button
+                type="button"
+                onClick={() => handleDeleteProduct(product._id)}
+                className="py-2 px-6 bg-red-600 text-white font-semibold rounded-md shadow-sm hover:bg-red-500"
+              >
+                Delete Product
+              </button>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
+  
 };
 
 export default UpdateProducts;

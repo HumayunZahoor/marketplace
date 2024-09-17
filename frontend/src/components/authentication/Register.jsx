@@ -45,15 +45,15 @@ const Register = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
-        <form onSubmit={handleRegister} className="space-y-4">
+        <h2 className="text-2xl font-bold text-indigo-950 text-center mb-6">Register</h2>
+        <form onSubmit={handleRegister} className="space-y-4 text-indigo-950">
           <div>
             <label className="block font-semibold mb-1">Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
               required
             />
           </div>
@@ -63,7 +63,7 @@ const Register = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
               required
             />
           </div>
@@ -73,7 +73,7 @@ const Register = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
               required
             />
           </div>
@@ -83,12 +83,12 @@ const Register = () => {
               type="file"
               onChange={handleImageChange}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-950"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 transition duration-300"
+            className="w-full bg-indigo-950 text-white p-2 rounded-lg hover:bg-indigo-900 transition duration-300"
           >
             Register
           </button>

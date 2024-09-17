@@ -27,22 +27,29 @@ const Navbar = () => {
     console.log("Search submitted");
   };
 
+  const fetchWishlistCount = async () => {
+    if (!isLoggedIn || !user?.email) return;
+
+    try {
+      const response = await axios.get(`http://localhost:5001/api/wishlist/get-wishlist/${user.email}`);
+      const activeWishlists = response.data.filter(wishlist => wishlist.status === true); 
+      setWishlistCount(activeWishlists.length); 
+    } catch (error) {
+      console.error('Error fetching wishlist count:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchWishlistCount = async () => {
-      if (!isLoggedIn || !user?.email) return;
-  
-      try {
-        const response = await axios.get(`http://localhost:5001/api/wishlist/get-wishlist/${user.email}`);
-        const activeWishlists = response.data.filter(wishlist => wishlist.status === true); 
-        setWishlistCount(activeWishlists.length); 
-      } catch (error) {
-        console.error('Error fetching wishlist count:', error);
-      }
-    };
-  
     fetchWishlistCount();
+
+   
+    const interval = setInterval(() => {
+      fetchWishlistCount();
+    },50000);
+
+    
+    return () => clearInterval(interval);
   }, [isLoggedIn, user?.email]);
-  
 
   return (
     <div className="bg-indigo-950 text-white py-4 px-8 sticky top-0 z-50">
@@ -250,20 +257,6 @@ const Navbar = () => {
                 </li>
               </>
             )}
-            <li>
-              <Link
-                to="/Cart"
-                className="text-blue-200 hover:text-blue-100 py-2 px-4 rounded transition duration-300 flex items-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <FaShoppingCart />
-                {wishlistCount > 0 && (
-                  <span className="ml-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
-                    {wishlistCount}
-                  </span>
-                )}
-              </Link>
-            </li>
           </ul>
         </div>
       )}

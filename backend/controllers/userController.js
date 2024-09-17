@@ -2,7 +2,8 @@ import User from '../models/User.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-
+import fs from 'fs';
+import path from 'path';
 
 
 export const registerUser = async (req, res) => {
@@ -160,3 +161,35 @@ export const userByEmail = async (req, res) => {
   }
 };
 
+//---------------------------------------------
+
+export const updateUserImage = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const image = req.file ? req.file.filename : null; 
+
+    if (!image) {
+      return res.status(400).json({ message: 'Image is required' });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.image) {
+      const oldImagePath = path.join('uploads', user.image);
+      fs.unlink(oldImagePath, (err) => {
+        if (err) console.error('Error deleting old image:', err);
+      });
+    }
+
+    user.image = image;
+    await user.save();
+
+    res.status(200).json({ message: 'Image updated successfully', image });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
