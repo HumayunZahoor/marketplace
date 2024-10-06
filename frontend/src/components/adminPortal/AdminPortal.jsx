@@ -77,7 +77,7 @@ const AdminPortal = () => {
         <img
           src={imageUrl}
           alt="Profile"
-          className="w-36 h-36 rounded-full object-cover mb-4 sm:mb-0"
+          className="w-36 h-36 rounded-full object-cover mb-4 sm:mb-0 border-2 border-s-green-800"
         />
         <div className="flex-grow text-center sm:text-left px-4">
           <h1 className="text-indigo-950 font-serif text-2xl font-bold">
@@ -94,7 +94,7 @@ const AdminPortal = () => {
           className="py-1 px-3 bg-indigo-950 text-white rounded-full transition duration-300 hover:bg-indigo-900"
           onClick={triggerFileInput}
         >
-          Edit
+          Edit Pic
         </button>
         <input
           type="file"

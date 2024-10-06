@@ -13,7 +13,7 @@ import productRoutes from './routes/productRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 app.use(cors({
@@ -66,3 +66,4 @@ const PORT = 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+

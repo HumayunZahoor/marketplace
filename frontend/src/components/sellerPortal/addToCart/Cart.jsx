@@ -21,7 +21,7 @@ const Cart = () => {
     }, [isLoggedIn, user?.email]);
 
     return (
-        <div className="p-6">
+        <div className="max-w-4xl mx-auto mt-10 px-4 sm:px-6 lg:px-8 text-indigo-950">
             <h2 className="text-2xl font-bold mb-4">Wishlist</h2>
             {wishlists.length > 0 ? (
                 <table className="table-auto w-full border-collapse border border-gray-300">

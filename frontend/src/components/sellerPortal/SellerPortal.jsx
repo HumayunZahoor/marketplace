@@ -8,7 +8,7 @@ const SellerPortal = () => {
   const [profile, setProfile] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUpdated, setImageUpdated] = useState(false);
-  const [showUploadButton, setShowUploadButton] = useState(false); 
+  const [showUploadButton, setShowUploadButton] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const SellerPortal = () => {
       }));
       alert('Profile image updated successfully');
       setImageUpdated(true);
-      setShowUploadButton(false); 
+      setShowUploadButton(false);
     } catch (error) {
       console.error('Error updating image:', error);
       alert('Failed to update image');
@@ -68,29 +68,33 @@ const SellerPortal = () => {
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
-    setShowUploadButton(true); 
+    setShowUploadButton(true);
   };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <div className="relative flex items-center p-4 bg-white shadow-md rounded-lg mb-6">
+      <div className="relative flex flex-col sm:flex-row items-center justify-between sm:space-x-6 p-4 bg-white shadow-md rounded-lg mb-6">
         <img
           src={imageUrl}
           alt="Profile"
-          className="w-36 h-36 rounded-full object-cover mr-4"
+          className="w-36 h-36 rounded-full object-cover mb-4 sm:mb-0 border-2 border-indigo-950"
         />
-        <div>
+        <div className="flex-grow text-center sm:text-left px-4">
           <h1 className="text-indigo-950 font-serif text-2xl font-bold">
             {profile?.name || user.name}
           </h1>
           <p className="text-gray-700">{profile?.email || user.email}</p>
-          <p className="text-gray-500">{profile?.role || 'Visitor'}</p>
+          <p className="text-gray-500">{profile?.role || 'Admin'}</p>
+        </div>
+        <div className="text-center mb-4 sm:mb-0 sm:mr-4">
+          <h2 className="text-indigo-950 font-semibold">Balance</h2>
+          <p className="text-gray-800 text-lg">${profile?.balance || 0}</p>
         </div>
         <button
-          className="absolute top-2 right-2 py-1 px-3 bg-indigo-950 text-white rounded-full transition duration-300 hover:bg-indigo-900"
+          className="py-1 px-3 bg-indigo-950 text-white rounded-full transition duration-300 hover:bg-indigo-900"
           onClick={triggerFileInput}
         >
-          Edit
+          Edit Pic
         </button>
         <input
           type="file"
@@ -122,7 +126,7 @@ const SellerPortal = () => {
           to="/ShopList"
           className="block py-2 px-4 bg-indigo-950 text-white rounded-lg text-center transition duration-300 hover:bg-indigo-900"
         >
-          Your Shop
+          Your Startups
         </Link>
       </div>
     </div>

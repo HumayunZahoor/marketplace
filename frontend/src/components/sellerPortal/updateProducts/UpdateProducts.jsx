@@ -91,7 +91,7 @@ const UpdateProducts = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="max-w-4xl mx-auto mt-10 px-4 sm:px-6 lg:px-8 text-indigo-950">
       <h1 className="text-3xl font-bold mb-6 text-indigo-950">Manage Products</h1>
       <p className="mb-4 text-lg text-gray-700">
         Email of logged-in user: <span className="font-semibold">{user.email}</span>

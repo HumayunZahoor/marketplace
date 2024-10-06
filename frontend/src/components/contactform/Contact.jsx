@@ -23,14 +23,14 @@ const Contact = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10">
-      <h2 className="text-3xl font-bold mb-6">Contact Us</h2>
-      <p className="text-lg mb-6">
-      Do you want to create a shop and sell your amazing products? You're at the right place! At our marketplace, we provide the perfect platform to grow your business and reach countless customers. Simply request permission from the owner, and you could soon be managing your very own shop and making your entrepreneurial dreams come true!
+    <div className="max-w-4xl mx-auto mt-10 px-4 sm:px-6 lg:px-8 text-indigo-950">
+      <h2 className="text-3xl font-bold mb-6 text-center">Contact Us</h2>
+      <p className="text-lg mb-6 text-center">
+        Do you want to create a shop and sell your amazing products? You're at the right place! At our marketplace, we provide the perfect platform to grow your business and reach countless customers. Simply request permission from the owner, and you could soon be managing your very own shop and making your entrepreneurial dreams come true!
       </p>
-      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+          <label className="block text-indigo-950 text-sm font-bold mb-2" htmlFor="name">
             Name
           </label>
           <input
@@ -42,7 +42,7 @@ const Contact = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+          <label className="block text-indigo-950 text-sm font-bold mb-2" htmlFor="email">
             Email
           </label>
           <input
@@ -54,11 +54,11 @@ const Contact = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="message">
+          <label className="block text-indigo-950 text-sm font-bold mb-2" htmlFor="message">
             Message
           </label>
           <textarea
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-indigo-950 leading-tight focus:outline-none focus:shadow-outline"
             id="message"
             placeholder="Describe yourself and why you want to create a shop?"
             value={message}
@@ -66,9 +66,9 @@ const Contact = () => {
             required
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-indigo-950 hover:bg-indigo-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
             Send Message

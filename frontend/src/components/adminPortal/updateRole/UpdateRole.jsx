@@ -9,6 +9,7 @@ const UpdateRole = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [highlightedUserId, setHighlightedUserId] = useState(null);
   const rowRefs = useRef({});
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -18,7 +19,6 @@ const UpdateRole = () => {
         console.error('Error fetching users', err);
       }
     };
-
     fetchUsers();
   }, []);
 
@@ -39,31 +39,28 @@ const UpdateRole = () => {
     }
   };
 
-  
   const handleSearch = () => {
     const matchingUser = users.find((user) => user.email === searchTerm);
     if (matchingUser) {
       setHighlightedUserId(matchingUser._id);
-     
       rowRefs.current[matchingUser._id]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      toast.success('No user found with this email');
+      toast.error('No user found with this email');
       setHighlightedUserId(null);
     }
   };
 
   return (
-    <div className="p-6 text-white min-h-screen">
+    <div className="p-6 text-white min-h-screen bg-gray-100">
       <h1 className="text-3xl text-indigo-950 font-bold mb-6 text-center">Update User Roles</h1>
 
-      
       <div className="flex justify-center mb-6">
         <input
           type="text"
           placeholder="Search by email"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border border-gray-300 rounded-l-md text-black w-1/3"
+          className="p-2 border border-gray-300 rounded-l-md text-black w-full max-w-md"
         />
         <button
           onClick={handleSearch}
@@ -73,7 +70,6 @@ const UpdateRole = () => {
         </button>
       </div>
 
-    
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white text-indigo-950 rounded-lg shadow-lg">
           <thead>
@@ -99,7 +95,7 @@ const UpdateRole = () => {
                   <select
                     value={selectedRole[user._id] || user.role}
                     onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                    className="p-2 border border-gray-300 rounded-md text-black"
+                    className="p-2 border border-gray-300 rounded-md text-black w-full sm:w-auto"
                   >
                     <option value="SuperAdmin">SuperAdmin</option>
                     <option value="Seller">Seller</option>
@@ -109,7 +105,7 @@ const UpdateRole = () => {
                 <td className="py-2 px-4">
                   <button
                     onClick={() => handleSubmit(user._id)}
-                    className="p-2 bg-indigo-950 hover:bg-indigo-900 text-white rounded-md"
+                    className="p-2 bg-indigo-950 hover:bg-indigo-900 text-white rounded-md w-full sm:w-auto"
                   >
                     Update Role
                   </button>

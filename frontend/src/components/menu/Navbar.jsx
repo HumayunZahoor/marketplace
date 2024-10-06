@@ -96,14 +96,7 @@ const Navbar = () => {
                 Home
               </Link>
             </li>
-            <li>
-              <Link
-                to="/Contact"
-                className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
-              >
-                Reach Out
-              </Link>
-            </li>
+           
             {isLoggedIn && (
               <>
                 {user.role === 'SuperAdmin' && (
@@ -136,6 +129,12 @@ const Navbar = () => {
                     >
                       Shop Stop
                     </Link>
+                    <Link
+                    to="/Contact"
+                    className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                  >
+                    Reach Out
+                  </Link>
                   </li>
                 )}
                 {user.role === 'Visitor' && (
@@ -146,6 +145,12 @@ const Navbar = () => {
                     >
                       Shop Stop
                     </Link>
+                    <Link
+                    to="/Contact"
+                    className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                  >
+                    Reach Out
+                  </Link>
                   </li> 
                 )}
                 <li>
@@ -204,15 +209,6 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/Shop"
-                className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Shop Stop
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/Contact"
                 className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
                 onClick={() => setMobileMenuOpen(false)}
@@ -226,23 +222,55 @@ const Navbar = () => {
                   <li>
                     <Link
                       to="/AdminPortal"
-                      className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                      className="hover:text-gray-400 py-2 px-4 mb-4 rounded transition duration-300 flex items-center"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Admin Portal
                     </Link>
+                    <Link
+                      to="/Shop"
+                      className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Shop Stop
+                    </Link>
                   </li>
                 )}
                 {user.role === 'Seller' && (
-                  <li>
+                  <li >
                     <Link
                       to="/SellerPortal"
-                      className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                      className="hover:text-gray-400 py-2 px-4 mb-4 rounded transition duration-300 flex items-center"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       Seller Portal
                     </Link>
+                    <Link
+                      to="/Shop"
+                      className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Shop Stop
+                    </Link>
                   </li>
+                )}
+                {user.role === 'Visitor' && (
+                  <li > 
+                    <Link
+                      to="/Shop"
+                      className="hover:text-gray-400 py-2 px-4 mb-4 rounded transition duration-300 flex items-center"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Shop Stop
+                    </Link>
+                    <Link
+                    to="/Contact"
+                    className="hover:text-gray-400 py-2 px-4 rounded transition duration-300 flex items-center"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    ContactUS
+                  </Link>
+                  </li> 
                 )}
                 <li>
                   <button
@@ -256,6 +284,22 @@ const Navbar = () => {
                   </button>
                 </li>
               </>
+            )}
+              {isLoggedIn && (
+              <li className="relative">
+                <Link
+                  to="/Cart"
+                  className="text-blue-200 hover:text-blue-100 py-2 px-4 rounded transition duration-300 flex items-center"
+                   onClick={() => setMobileMenuOpen(false)}
+                >
+                  <FaShoppingCart />
+                  {wishlistCount > 0 && (
+                    <span className="absolute top-0 left-7 text-sm bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                      {wishlistCount}
+                    </span>
+                  )}
+                </Link>
+              </li>
             )}
           </ul>
         </div>

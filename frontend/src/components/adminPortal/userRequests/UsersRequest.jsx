@@ -32,33 +32,35 @@ const UsersRequest = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-xl text-indigo-950 font-bold mb-4">All Contacts</h1>
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead className='bg-indigo-950 text-white'>
-          <tr>
-            <th className="py-2 px-4 border-b">Name</th>
-            <th className="py-2 px-4 border-b">Email</th>
-            <th className="py-2 px-4 border-b">Message</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contacts.map((contact) => (
-            <tr key={contact._id}>
-              <td className="py-2 px-4 border-b">{contact.name}</td>
-              <td className="py-2 px-4 border-b flex items-center">
-                <span className="mr-2">{contact.email}</span>
-                <button
-                  onClick={() => handleCopy(contact.email)}
-                  className=" text-indigo-950 text-2xl rounded ml-4"
-                >
-                <IoIosCopy />
-                </button>
-              </td>
-              <td className="py-2 px-4 border-b">{contact.message}</td>
+      <h1 className="text-2xl text-indigo-950 font-bold mb-6 text-center">All Contacts</h1>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+          <thead className="bg-indigo-950 text-white">
+            <tr>
+              <th className="py-2 px-4 border-b">Name</th>
+              <th className="py-2 px-4 border-b">Email</th>
+              <th className="py-2 px-4 border-b">Message</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {contacts.map((contact) => (
+              <tr key={contact._id} className="hover:bg-gray-100">
+                <td className="py-2 px-4 border-b text-sm sm:text-base">{contact.name}</td>
+                <td className="py-2 px-4 border-b flex items-center text-sm sm:text-base">
+                  <span className="mr-2 truncate">{contact.email}</span>
+                  <button
+                    onClick={() => handleCopy(contact.email)}
+                    className="text-indigo-950 text-2xl rounded ml-4 hover:text-indigo-700 transition duration-200"
+                  >
+                    <IoIosCopy />
+                  </button>
+                </td>
+                <td className="py-2 px-4 border-b text-sm sm:text-base">{contact.message}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

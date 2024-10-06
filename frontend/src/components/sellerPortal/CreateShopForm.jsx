@@ -40,7 +40,7 @@ const CreateShopForm = () => {
   
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-centermax-w-4xl mx-auto mt-10 px-4 sm:px-6 lg:px-8 text-indigo-950">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-indigo-950 text-center mb-6">Create Shop</h2>
         <form onSubmit={handleSubmit} className="space-y-4 text-indigo-950">
